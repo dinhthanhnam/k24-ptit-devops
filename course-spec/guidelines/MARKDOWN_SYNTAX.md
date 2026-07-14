@@ -3,8 +3,9 @@
 Universal structure sau frontmatter. Heading tiếng Việt tự do; **`<!-- section: id -->` bắt buộc** để index / `read_section` / validate.
 
 > Phân biệt:  
-> - `session_kind: theory | practice` = loại **buổi** (practice session = chỉ homework).  
-> - `lesson_mode: theory | practical` = loại **bài lesson** trong session theory.
+> - `session_kind: theory | practice` = loại **buổi** (practice = chỉ homework, không lesson/tutorial).  
+> - `lesson_mode: theory | practical` = loại **bài lesson** trong session theory.  
+> - `type: tutorial` = 1 lab step-by-step / **theory session only** — xem `TUTORIAL_DESIGN.md`.
 
 ---
 
@@ -24,7 +25,9 @@ Universal structure sau frontmatter. Heading tiếng Việt tự do; **`<!-- sec
 
 Cứ **có lesson** → phải có **cả** quiz lesson **và** revision questions (gate plan / skill).
 
-Session `session_kind: practice` (ôn tập): **không** lesson / quiz lesson / revision — chỉ homework.
+Session `session_kind: practice` (ôn tập): **không** lesson / quiz / revision / **tutorial** — chỉ homework.
+
+Mỗi session **theory**: **1** `session_NN_tutorial.md`, trừ khi PM `tutorial.required: false`.
 
 ---
 
@@ -127,5 +130,16 @@ sessions/ss{NN}/session_{NN}_revision_{MM}.md   # bắt buộc companion
 sessions/ss{NN}/session_{NN}_quiz_lesson_{MM}.md
 sessions/ss{NN}/session_{NN}_quiz_warm_up.md    # session-level
 sessions/ss{NN}/session_{NN}_quiz_exit.md
+sessions/ss{NN}/session_{NN}_tutorial.md        # 1 lab step-by-step / session
 sessions/ss{NN}/session_{NN}_homework.md
+assets/ss{NN}/...                               # ảnh chèn tay (human); tutorial chỉ [IMAGE NEEDED]
 ```
+
+### Ảnh trong tutorial / practical lesson (DevOps)
+
+```markdown
+> **[IMAGE NEEDED]** Mô tả ảnh cần chèn.
+> Gợi ý path: `assets/ss02/step_03_....png`
+```
+
+Không generate binary; human thêm file vào `assets/` sau.

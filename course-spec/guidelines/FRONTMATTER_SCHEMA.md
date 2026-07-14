@@ -12,7 +12,8 @@ Mục tiêu: mọi unit (lesson, quiz, homework, review) là file Markdown + YAM
 ---
 schema_version: 1
 id: ss07_lesson_02                 # unique trong course; snake/kebab OK
-type: lesson                       # lesson | quiz | homework | revision_questions | review | meta | other
+type: lesson                       # lesson | quiz | homework | tutorial | revision_questions | review | meta | other
+# tutorial = 1 lab step-by-step / session (alias MCP: step_by_step)
 status: draft                      # draft | in_review | needs_fix | approved | deprecated
 
 # Định vị trong curriculum
@@ -117,6 +118,23 @@ question_count: 5
 # optional matrix ids from QUIZ_FORMAT
 matrix_id: lesson_default
 ```
+
+### `type: tutorial` (step-by-step lab — 1 / session)
+
+```yaml
+type: tutorial
+id: ss02_tutorial
+session: 2
+session_kind: theory
+title: "Lab: ..."
+step_count: 6
+maps_to: [ss02_lesson_01, ss02_lesson_02]
+depends_on: [ss02_lesson_01, ss02_lesson_02]
+image_policy: placeholder   # dùng > **[IMAGE NEEDED]** ... trong body
+owns: []
+```
+
+File: `sessions/ssN/session_NN_tutorial.md`. Xem `TUTORIAL_DESIGN.md`.
 
 ### `type: homework`
 

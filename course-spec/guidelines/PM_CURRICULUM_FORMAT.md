@@ -87,31 +87,35 @@ lessons:
     title: "Đọc log pipeline và xử lý lỗi build"
     owns: [pipeline-log-debug]
     assumes: [maven-gradle-in-ci]
+tutorial:
+  required: true
+  title: "Lab step-by-step (optional title)"
+  step_count: 6
 homework:
   required: true
   exercise_count: 6
 ```
 ````
 
-### Session `practice` (ôn tập / lab — chỉ homework)
+### Session `practice` (ôn tập / lab)
 
-Ví dụ Session 03 = tổng hợp Session 01 + 02: **không lesson**, đúng 6 bài tập theo `HOMEWORK_DESIGN` §5.
+**Không lesson, không tutorial** — chỉ **homework** 6 EX.
 
 ```yaml
 session: 3
 id: ss03
 title: "Hệ thống kiến thức Session 01, 02"
-session_kind: practice         # tiết thực hành / ôn tập
-practice_of: [1, 2]            # bắt buộc: các session theory được ôn
-depends_on_sessions: [1, 2]    # phải approved trước khi gen homework
-owns_concepts: []              # không concept mới
-assumes_concepts: []           # verify: = union owns của practice_of
-does_not_cover: []             # không mở topic session 4+
-lessons: []                    # BẮT BUỘC rỗng
+session_kind: practice
+practice_of: [1, 2]
+depends_on_sessions: [1, 2]
+owns_concepts: []
+assumes_concepts: []
+does_not_cover: []
+lessons: []
+# không khai tutorial (hoặc tutorial: { required: false })
 homework:
   required: true
   exercise_count: 6
-  only_artifact: true          # session = homework file duy nhất
   coverage_rule: "every session in practice_of appears in ≥1 EX; ≥1 multi-session EX"
 ```
 

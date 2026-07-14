@@ -66,12 +66,16 @@ Tên có thể alias; **ý nghĩa** giữ nguyên:
 | `get_prior_content` | Summary unit **approved** prerequisite |
 | `search_concepts` | Tìm đoạn đã gen (anti-dup + hook) |
 | `read_section` | Đọc section cụ thể file approved |
-| `start_unit` | Tạo file + frontmatter skeleton |
+| `start_unit` | Tạo file + frontmatter (`lesson`/`tutorial`/`homework`/quiz/…) |
 | `write_section` | Ghi từng section |
 | `validate_unit` | frontmatter + section ids + depends |
-| `reembed` | Sau gen/fix |
+| `reembed` | Sau gen/fix (`scope=workspace` / `only_path`) |
 | `get_review_packet` | Cho human |
 | `set_review_status` | draft→…→approved |
+
+**Unit `tutorial` (step-by-step):** 1 lab / **theory session only** — `unit_type=tutorial` (alias `step_by_step`).  
+**Cấm** tutorial trên `session_kind: practice` (practice = homework only).  
+Guideline: `TUTORIAL_DESIGN.md`. DevOps: `> **[IMAGE NEEDED]** ...` khi cần screenshot.
 
 Nếu tool chưa implement: **mô phỏng bằng file ops + checklist** nhưng vẫn ghi reasoning như đã gọi.
 
@@ -79,26 +83,26 @@ Nếu tool chưa implement: **mô phỏng bằng file ops + checklist** nhưng v
 
 ## 2. Flow chuẩn
 
-### 2.1 Bootstrap course / Session 1
+### 2.1 Bootstrap / theory session (vd Session 2)
 
 ```
 get_course_spec
-get_writing_rules
-verify_pm(session=1)
-get_build_plan(session=1)
-for each unit in plan:
-  start_unit
-  get_session_blueprint          # prior rỗng
-  # KHÔNG get_prior_content (hoặc empty)
-  for section in sections_required:
-    write_section
-  validate_unit
-  reembed
-  set status in_review
-  get_review_packet → HUMAN
-  if needs_fix: fix → validate → reembed → review lại
-  set_review_status(approved)
+get_writing_rules  # gồm tutorial
+verify_pm(session=N)
+get_build_plan(session=N)
+# Order: lessons → tutorial → homework → quiz phase
+for each lesson:
+  start_unit(lesson) → write → validate → reembed → review → approved
+  (+ revision + quiz_lesson theo skill nếu bật)
+start_unit(unit_type="tutorial", step_count=6)
+  write steps + [IMAGE NEEDED] where UI matters
+  validate → reembed → human review → approved
+start_unit(homework) → … → approved
+# quiz warm_up / exit nếu plan
 ```
+
+**Tutorial ≠ homework:** tutorial = happy-path lab (theory only); homework = 6 EX.  
+**Practice:** không gen tutorial.
 
 ### 2.2 Session N (N ≥ 2) — inherit approved
 
