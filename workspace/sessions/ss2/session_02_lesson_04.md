@@ -24,7 +24,7 @@ source: generated
 pm_ref: Session 02 / Lesson 04
 language: vi
 created: '2026-07-14'
-updated: '2026-07-14'
+updated: '2026-07-15'
 lesson_mode: practical
 ---
 
@@ -53,6 +53,7 @@ Nếu các bạn chạy trực tiếp ứng dụng thô (ví dụ: máy chủ No
     *   `/etc/nginx/sites-enabled/`: Thư mục chứa liên kết tượng trưng (symlink) trỏ đến file cấu hình trong `sites-available`. Chỉ những file nằm trong thư mục này mới thực sự được Nginx tải và áp dụng.
     *   `/var/www/html/`: Thư mục mặc định chứa mã nguồn tĩnh (HTML/CSS) của website.
 *   **Server Block (Virtual Host):** Cấu hình của Nginx cho phép chạy nhiều website khác nhau (ví dụ: `siteA.com` và `siteB.com`) trên cùng một địa chỉ IP máy chủ vật lý bằng cách phân biệt theo tên miền (`server_name`) hoặc cổng truy cập.
+*   **Xác thực cơ bản (HTTP Basic Authentication):** Là cơ chế bảo mật tích hợp sẵn trong giao thức HTTP, yêu cầu người dùng nhập đúng tài khoản và mật khẩu thông qua một hộp thoại (popup) trên trình duyệt trước khi được phép truy cập vào tài nguyên. Nginx hỗ trợ cấu hình cơ chế này thông qua hai chỉ thị: `auth_basic` (để đặt thông báo yêu cầu đăng nhập) và `auth_basic_user_file` (để trỏ tới tệp tin chứa thông tin mật khẩu đã được mã hóa/băm, thường được tạo thông qua lệnh `htpasswd` của gói công cụ `apache2-utils`).
 
 <!-- section: steps -->
 ## 3. Các bước thực hành

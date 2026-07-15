@@ -2,7 +2,7 @@
 schema_version: 1
 id: ss02_quiz_lesson_03
 type: quiz
-status: draft
+status: approved
 course_id: devops-basic
 session: 2
 unit: 3
@@ -24,7 +24,7 @@ source: generated
 pm_ref: Session 02 / quiz_lesson / L03
 language: vi
 created: '2026-07-14'
-updated: '2026-07-14'
+updated: '2026-07-15'
 quiz_kind: lesson
 question_count: 5
 maps_to:
