@@ -1,40 +1,38 @@
-# devops-course
+# k24-ptit-devops
 
-Repo **nội dung học phần** (tách khỏi MCP engine).
+Repo **nội dung học phần DevOps Basics** (K24 PTIT).
 
-## Chỉ có input chuẩn
+> Không nhầm với `devops-course` (repo test cũ).
+
+## Layout
 
 ```
-course-spec/
-  pm.curriculum.md              # PM nguyên sơ (plain list)
-  guidelines/                   # chuẩn format + homework/quiz
-  skills/SKILL_COURSE_FACTORY.md
-workspace/                      # OUTPUT — agent gen markdown vào đây
-  sessions/
+k24-ptit-devops/
+  course-spec/     # PM + guidelines + skill
+  workspace/       # OUTPUT gen
+  assets/          # ảnh chèn tay (optional)
 ```
 
-**Không** nhúng domain QuickBite / Evolution Map (optional sau, `course-spec/domain/`).
+## MCP (course-factory)
 
-## Quan hệ với MCP
+Env bắt buộc trỏ **repo này**:
 
-| Repo | Vai trò |
-|------|---------|
-| `devops-rag-mcp` | Engine MCP (tools, embed, index) |
-| `devops-course` (repo này) | Course-spec + workspace |
+| Biến | Path |
+|------|------|
+| `COURSE_SPEC` | `.../k24-ptit-devops/course-spec` |
+| `WORKSPACE` | `.../k24-ptit-devops/workspace` |
 
-Antigravity mở **workspace = repo này**, MCP trỏ env:
+File cấu hình Antigravity: `~/.gemini/config/mcp_config.json`  
+(Engine `.env` cũng nên trùng: `COURSE_SPEC=../k24-ptit-devops/course-spec`.)
 
-- `COURSE_SPEC` → `.../k24-ptit-devops/course-spec`
-- `WORKSPACE` → `.../k24-ptit-devops/workspace`
+**Lưu ý:** `env` trong `mcp_config.json` **ghi đè** `.env` của engine. Nếu MCP vẫn trỏ `devops-course`, agent sẽ ghi nhầm sang project test.
 
-## Flow test Antigravity
+## Kiểm tra nhanh
 
-1. `get_course_spec` / `get_writing_rules`
-2. **Chuẩn hóa PM** primitive → YAML theo `guidelines/PM_CURRICULUM_FORMAT.md` (ghi đè hoặc `pm.curriculum.structured.md` rồi merge)
-3. `verify_pm(1)` → gen Session 1 → review → approved → reembed
-4. Tiếp session sau; Session 3/6/… = `practice` chỉ 6 homework
+```powershell
+cd ...\devops-rag-mcp
+# sau khi mcp_config đúng — hoặc set env rồi:
+.\.venv\Scripts\python.exe -c "from src.config import COURSE_SPEC, WORKSPACE; print(COURSE_SPEC); print(WORKSPACE)"
+```
 
-## PM primitive
-
-File hiện tại: list Session/Lesson gốc.  
-Session kiểu *"Hệ thống kiến thức Session X, Y"* = **practice** (không lesson body).
+Phải thấy `k24-ptit-devops`.

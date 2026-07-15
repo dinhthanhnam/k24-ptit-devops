@@ -13,14 +13,17 @@ language: vi
 LLM **bắt buộc** tuân thủ skill này khi gen tài nguyên course qua MCP.  
 Mục tiêu: đúng flow, đúng dependency, chống trùng, có human gate.
 
-**Repo này (`devops-course`)** chỉ chứa:
+**Repo khóa học hiện tại: `k24-ptit-devops`** (DevOps Basics).  
+**Không** sửa repo test `devops-course` trừ khi user yêu cầu rõ.
 
-- `course-spec/pm.curriculum.md` — PM **nguyên sơ** (list Session/Lesson)
+Repo này chứa:
+
+- `course-spec/pm.curriculum.md` — PM
 - `course-spec/guidelines/*` — chuẩn format
 - `course-spec/skills/this file`
-- `workspace/` — **output** gen (ban đầu trống)
+- `workspace/` — **output** gen
 
-MCP engine nằm repo khác (`devops-rag-mcp`). Không gen vào folder MCP.
+MCP engine: `devops-rag-mcp` (chỉ tools). Gen **chỉ** vào `k24-ptit-devops/workspace/`.
 
 ---
 
