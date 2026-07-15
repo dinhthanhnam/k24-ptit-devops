@@ -191,6 +191,7 @@ Sau `verify_pm`:
    - Phải cung cấp chi tiết **Prompt gợi ý sinh hình ảnh minh họa** tương ứng để người dùng có thể dùng làm tài liệu tham khảo/sinh ảnh thực tế.
 4. **Tài liệu tham khảo (References):** Bắt buộc phải gắn link liên kết (Markdown link) kèm tiêu đề tài liệu làm ưu tiên hàng đầu, không cần ghi tên tác giả.
 5. **Câu hỏi ôn tập (Revision Questions):** Mỗi câu hỏi tự luận ôn tập (RQ) phải đi kèm một phần gợi ý đáp án/định hướng trả lời ngắn gọn (ví dụ: `*Gợi ý đáp án:*` hoặc `*Hướng dẫn trả lời:*`) ngay phía dưới câu hỏi để hỗ trợ học viên tự đánh giá kiến thức.
+6. **Nguyên tắc Cân Bằng Độ Chi Tiết (E-learning Friendly):** Các bài học cần trình bày kiến thức một cách súc tích, ngắn gọn, tránh viết quá học thuật hoặc đi quá sâu vào các khái niệm phần cứng tầng sâu không cần thiết cho DevOps cơ bản (như cấu trúc chi tiết thanh ghi CPU). Bổ sung các thông tin lịch sử hoặc lý thuyết cần đi kèm dẫn chứng ngắn gọn, trực quan.
 
 ---
 
