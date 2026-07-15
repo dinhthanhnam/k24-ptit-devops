@@ -112,52 +112,52 @@ Sai. Quyền hạn của tài khoản root bên trong hệ thống không bị t
 @category: 1
 
 ## Q4
-Khi các bạn cấu hình luật mặc định cho tường lửa UFW là `sudo ufw default deny incoming`, điều gì sẽ xảy ra với lưu lượng mạng?
+Tường lửa cấp Hạ tầng Đám mây (Cloud Firewall, ví dụ: DigitalOcean Cloud Firewalls) có lợi thế vượt trội nào về mặt tối ưu tài nguyên hệ thống so với tường lửa cấp Hệ điều hành chạy trong VPS (UFW)?
 
 [A]
-Tất cả lưu lượng đi ra từ server kết nối đến internet sẽ bị chặn hoàn toàn.
+Cloud Firewall giúp VPS không bị tốn CPU và băng thông mạng để xử lý và từ chối các gói tin rác/tấn công.
 [EXP]
-Sai. Luật này chỉ áp dụng cho lưu lượng đi vào (incoming), lưu lượng đi ra (outgoing) không bị ảnh hưởng bởi chỉ thị này.
+Đúng. Do Cloud Firewall lọc sạch lưu lượng xấu ở biên mạng của Datacenter trước khi gói tin đến được VPS, giúp VPS tiết kiệm tài nguyên xử lý.
 [B]
-Tường lửa sẽ tự động mở cổng cho toàn bộ dịch vụ phổ biến (HTTP, HTTPS, SSH).
+Cloud Firewall tự động tăng gấp đôi băng thông card mạng vật lý của máy chủ ảo VPS.
 [EXP]
-Sai. Luật này chặn mọi kết nối đi vào theo mặc định, không tự động mở bất kỳ cổng nào trừ khi có cấu hình cụ thể bằng lệnh ufw allow.
+Sai. Cloud Firewall không thay đổi phần cứng hay băng thông tối đa của card mạng.
 [C]
-Tất cả các gói tin đi vào và đi ra khỏi máy chủ đều bị tường lửa chặn lại.
+Cloud Firewall chạy trực tiếp bên trong nhân Linux của VPS nên có tốc độ xử lý nhanh hơn.
 [EXP]
-Sai. Chỉ có lưu lượng đi vào (incoming) là bị chặn, lưu lượng đi ra vẫn hoạt động bình thường.
+Sai. Đây là mô tả của tường lửa cấp OS như iptables/UFW, không phải Cloud Firewall.
 [D]
-Mọi yêu cầu kết nối đi vào từ bên ngoài đến máy chủ đều bị chặn theo mặc định.
+Cloud Firewall giúp loại bỏ hoàn toàn việc phải cấu hình địa chỉ IP Public cho VPS.
 [EXP]
-Đúng. Đây là quy tắc bảo mật an toàn, mặc định chặn tất cả lưu lượng đi vào, học viên phải khai báo cho phép từng dịch vụ cụ thể.
+Sai. VPS vẫn cần IP Public để giao tiếp internet bình thường.
 
-@correct: D
+@correct: A
 @point: 20
 @difficulty: 2
 @concept: infrastructure-security
 @category: 1
 
 ## Q5
-Để đảm bảo không bị khóa quyền kết nối (lockout) ngoài ý muốn khi tiến hành hardening SSH và bật tường lửa UFW, các bạn nên thực hiện biện pháp phòng ngừa nào sau đây?
+Trong thực tế triển khai hạ tầng Cloud (ví dụ trên DigitalOcean), tại sao các kỹ sư DevOps thường được khuyến nghị kết hợp cả UFW (tường lửa OS) và Cloud Firewall (tường lửa hạ tầng)?
 
 [A]
-Tắt hoàn toàn tường lửa UFW trước khi khởi động lại dịch vụ SSH daemon.
+Vì nếu UFW bị tắt do sơ suất của quản trị viên, lớp Cloud Firewall bên ngoài vẫn bảo vệ được máy chủ ảo và ngược lại.
 [EXP]
-Sai. Việc tắt UFW tạm thời không giúp bảo vệ hệ thống khi bật lại và không phải là cách kiểm thử an toàn cấu hình SSH.
+Đúng. Đây là mô hình phòng thủ chiều sâu (Defense in Depth) nhằm tăng tính dự phòng bảo mật phòng hờ lỗi cấu hình hoặc tắt nhầm.
 [B]
-Giữ nguyên phiên kết nối SSH hiện tại và mở Terminal mới để kiểm tra kết nối.
+Vì bắt buộc phải bật cả hai thì dịch vụ SSH daemon trên cổng 22 mới cho phép kết nối.
 [EXP]
-Đúng. Giữ nguyên kết nối cũ giúp các bạn có "phao cứu sinh" để khôi phục/sửa đổi cấu hình nếu kết nối mới bị lỗi do cấu hình sai.
+Sai. SSH daemon hoạt động độc lập với tường lửa, chỉ cần ít nhất một tường lửa mở cổng là kết nối được.
 [C]
-Chia sẻ private key lên các diễn đàn DevOps để nhờ cộng đồng kiểm tra lỗi cấu hình.
+Vì Cloud Firewall chỉ hoạt động khi có UFW gửi tín hiệu đồng bộ hóa cấu hình định kỳ.
 [EXP]
-Sai. Tuyệt đối không chia sẻ private key vì điều này làm mất hoàn toàn tính bảo mật của tài khoản, bất cứ ai có key đều có thể kiểm soát server.
+Sai. Hai tường lửa này hoạt động độc lập và không đồng bộ hóa dữ liệu với nhau.
 [D]
-Khởi động lại máy chủ vật lý ngay lập tức sau khi sửa đổi bất kỳ cấu hình nào.
+Vì kết hợp cả hai sẽ tự động mã hóa mọi dữ liệu tĩnh lưu trữ trên ổ đĩa của Droplet.
 [EXP]
-Sai. Khởi động lại server mà cấu hình bị lỗi sẽ khiến hệ thống không thể khởi động dịch vụ SSH, khiến lỗi trầm trọng hơn và khó sửa.
+Sai. Tường lửa chỉ kiểm soát lưu lượng mạng, không có chức năng mã hóa ổ đĩa.
 
-@correct: B
+@correct: A
 @point: 20
 @difficulty: 3
 @concept: infrastructure-security

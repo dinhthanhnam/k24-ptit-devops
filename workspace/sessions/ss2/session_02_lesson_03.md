@@ -24,7 +24,7 @@ source: generated
 pm_ref: Session 02 / Lesson 03
 language: vi
 created: '2026-07-14'
-updated: '2026-07-14'
+updated: '2026-07-15'
 lesson_mode: theory
 ---
 
@@ -65,7 +65,12 @@ Dịch vụ SSH (mặc định chạy ở cổng 22) là lối vào chính của
 Tường lửa hoạt động như một người bảo vệ tại cửa khẩu:
 *   **Mặc định chặn toàn bộ lưu lượng đi vào (Default Deny Incoming):** Mọi gói tin từ internet gửi tới server sẽ bị chặn đứng, ngoại trừ những cổng dịch vụ được khai báo cho phép rõ ràng.
 *   **Mặc định cho phép toàn bộ lưu lượng đi ra (Default Allow Outgoing):** Server có thể tự do kết nối ra ngoài internet để tải bản cập nhật phần mềm hoặc liên kết dịch vụ.
-*   **UFW (Uncomplicated Firewall):** Là một công cụ quản lý tường lửa giao diện dòng lệnh đơn giản trên Ubuntu, được xây dựng như một lớp bọc bên ngoài công cụ tường lửa hệ thống `iptables` giúp người dùng dễ cấu hình hơn.
+
+Trong môi trường điện toán đám mây, các bạn có hai lớp bảo vệ tường lửa bổ trợ cho nhau:
+1.  **Tường lửa cấp Hệ điều hành (Host-based/OS-level Firewall - ví dụ: UFW):** Chạy trực tiếp bên trong hệ điều hành của VPS (như lệnh `iptables` hay `ufw` trên Ubuntu). Lớp tường lửa này quản lý lưu lượng ngay khi nó chạm vào card mạng ảo của máy ảo.
+2.  **Tường lửa cấp Hạ tầng Đám mây (Cloud Firewall - ví dụ: DigitalOcean Cloud Firewalls):** Chạy ở tầng mạng bên ngoài của nhà cung cấp Cloud, trước khi lưu lượng chạm tới VPS. Nó chặn hoàn toàn các truy cập độc hại từ xa, giúp máy chủ ảo tiết kiệm được tài nguyên xử lý (CPU) và băng thông mạng vì các gói tin không mong muốn đã bị lọc sạch từ cổng ngõ của Datacenter.
+
+*Khuyến nghị thực tế:* Nên kết hợp cả hai để tạo ra cơ chế phòng thủ chiều sâu (Defense in Depth). Nếu UFW bị tắt do nhầm lẫn, Cloud Firewall vẫn bảo vệ được máy chủ, và ngược lại.
 
 <!-- section: practice -->
 ## 4. Thực hành và minh hoạ
@@ -149,6 +154,22 @@ Mặc định UFW trên Ubuntu ở trạng thái tắt. Hãy thiết lập các 
 
 > **[IMAGE NEEDED]** Mô tả: Kết quả màn hình Terminal sau khi chạy lệnh sudo ufw status hiển thị cổng 22/tcp được ALLOW Incoming.
 > Gợi ý path: `assets/ss02/step_04_ufw_status.png`
+
+### Bước 5 — Thiết lập DigitalOcean Cloud Firewall (Tường lửa cấp hạ tầng)
+Để thiết lập lớp bảo vệ thứ hai ở tầng Cloud, các bạn thực hiện cấu hình trực tiếp trên giao diện quản trị của DigitalOcean:
+
+1.  **Truy cập menu Firewalls:** Đăng nhập vào trang quản trị DigitalOcean, tại thanh menu bên trái chọn **Networking**, sau đó chọn tab **Firewalls**.
+2.  **Tạo Firewall mới:** Nhấn nút **Create Firewall**.
+    *   **Name:** Đặt tên cho Firewall (ví dụ: `ptit-devops-fw`).
+3.  **Cấu hình luật Inbound Rules (Luật đi vào):**
+    *   **SSH:** Chọn Service là **SSH**, Port mặc định là **22**, Source để là **All IPv4** và **All IPv6** (nếu các bạn đã đổi cổng SSH sang cổng tùy chỉnh ở bài tập, hãy chọn Custom và nhập port tương ứng).
+    *   *Lưu ý:* Mặc định DigitalOcean Cloud Firewall sẽ chặn tất cả các cổng đi vào ngoại trừ các cổng được định nghĩa cụ thể tại đây.
+4.  **Cấu hình luật Outbound Rules (Luật đi ra):** Giữ nguyên cấu hình mặc định (cho phép All TCP, All UDP, All ICMP đi ra bất kỳ đích nào).
+5.  **Áp dụng cho VPS (Apply to Droplets):** Tại ô tìm kiếm ở mục **Apply to Droplets**, nhập tên Droplet của các bạn (ví dụ: `ptit-devops-server`) và nhấn chọn.
+6.  **Lưu cấu hình:** Nhấn nút **Create Firewall** để kích hoạt luật bảo vệ mới.
+
+> **[IMAGE NEEDED]** Mô tả: Giao diện cấu hình DigitalOcean Cloud Firewall cho phép inbound SSH và gán vào Droplet tương ứng.
+> Gợi ý path: `assets/ss02/step_05_do_cloud_firewall.png`
 
 <!-- section: pitfalls -->
 ## 5. Lỗi sai thường gặp
