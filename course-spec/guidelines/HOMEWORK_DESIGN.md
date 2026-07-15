@@ -134,36 +134,39 @@ Xem `FRONTMATTER_SCHEMA` — các field: `session_kind: practice`, `practice_of`
 
 ---
 
-## 6. Cấu trúc một exercise (format nộp/gen)
+## 6. Cấu trúc một bài tập (format nộp/gen)
 
-Mỗi exercise trong `session_NN_homework.md` (dùng chung theory & practice):
+Mỗi bài tập trong `session_NN_homework.md` (dùng chung cho cả theory & practice) cần tuân thủ cấu trúc sau bằng tiếng Việt:
 
 ```markdown
-### EX{n} — {title}
+### EX{n} — {Tên bài tập}
 - **tier:** guided | hints | independent
 - **maps_to_sessions:** [7]                 # theory: [current]; practice: subset of practice_of
 - **maps_to_lessons:** [ss07_lesson_02, ss07_lesson_03]
-- **owns_skills:** [edit-ci-yaml]           # skill vận dụng; practice: không dual-own concept registry
+- **owns_skills:** [edit-ci-yaml]           # skill vận dụng; practice: không đăng ký concept mới
 - **assumes:** [ci-cd-basics]
 
-#### Objectives
+#### Mục tiêu
 - ...
 
-#### Requirements
-- Context: {placeholder: course_context}
-- Constraints: ...
+#### Yêu cầu
+- Bối cảnh: {Mô tả bối cảnh ứng dụng / hạ tầng}
+- Ràng buộc: {Các ràng buộc kỹ thuật khắt khe}
 
-#### Verification
-- Commands / checks: ...
-- Expected signals: ...
-- Evidence: screenshot | log | file path
+#### Kiểm tra
+- Lệnh kiểm tra: {Lệnh thực thi để tự kiểm tra}
+- Kết quả mong đợi: {Kết quả in ra màn hình hoặc trạng thái mong đợi}
 
-#### Submission
-- Path: `homework/session_NN/ex{n}/...`
-- Required files: ...
+#### Tiêu chí chấm
+- **Yêu cầu phải có:** {Các file cấu hình, mã nguồn, nội dung bắt buộc phải xuất hiện trong thư mục nộp bài}
+- **Yêu cầu không được có:** {Các cấu hình sai quy chuẩn, thông tin nhạy cảm như mật khẩu plain-text, hoặc file dư thừa}
 
-#### Scaffolding
-<!-- guided: steps; hints: bullet hints; independent: omit or "none" -->
+#### Hướng dẫn nộp bài
+- **Đường dẫn trên GitHub:** `homework/session_NN/ex{n}/`
+- **Cơ chế nộp:** Học viên bắt buộc nộp bài lên kho lưu trữ GitHub của lớp học. Bài nộp phải ở dạng tệp tin văn bản thuần (mã nguồn, file cấu hình `.conf`/`.yml`, file báo cáo Markdown `.md`). Hạn chế tối đa việc nộp bài bằng hình ảnh (do ảnh khó kiểm tra tự động và khó diff thay đổi).
+
+#### Gợi ý/Bệ đỡ
+<!-- guided: các bước chi tiết; hints: các từ khóa gợi ý; independent: ghi "Không có" -->
 ```
 
 Frontmatter file homework: xem `FRONTMATTER_SCHEMA` (`type: homework`).
