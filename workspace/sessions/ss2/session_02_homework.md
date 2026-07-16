@@ -2,7 +2,7 @@
 schema_version: 1
 id: ss02_homework
 type: homework
-status: draft
+status: approved
 course_id: devops-basic
 session: 2
 unit: 0
@@ -20,8 +20,8 @@ does_not_cover:
 source: generated
 pm_ref: Session 02
 language: vi
-created: '2026-07-15'
-updated: '2026-07-15'
+created: '2026-07-16'
+updated: '2026-07-16'
 exercise_count: 6
 difficulty_mix:
   guided: 4
@@ -31,249 +31,258 @@ difficulty_mix:
 
 # Homework Session 02
 
-### EX1 — Phân quyền quản trị chi tiết (User & Sudo Management)
+### EX1 — Khởi tạo Droplet trên DigitalOcean
 - **tier:** guided
 - **maps_to_sessions:** [2]
-- **maps_to_lessons:** [ss02_lesson_03]
-- **owns_skills:** [linux-user-privileges]
-- **assumes:** [infrastructure-security]
+- **maps_to_lessons:** [ss02_lesson_02]
+- **owns_skills:** [digitalocean-droplet-creation]
+- **assumes:** [cloud-server-provisioning]
 
 #### Mục tiêu
-*   Tạo người dùng mới và phân quyền hạn sử dụng lệnh quản trị thông qua cấu hình `sudoers`.
-*   Phân biệt được quyền thực thi của tài khoản có cấu hình sudo đầy đủ và tài khoản bị giới hạn quyền.
+*   Thực hành đăng ký tài khoản, lựa chọn cấu hình phần cứng phù hợp và khởi tạo thành công Droplet chạy hệ điều hành Ubuntu Server trên hạ tầng đám mây DigitalOcean.
+*   Cấu hình xác thực an toàn bằng cặp khóa SSH (SSH Keypair) thay vì mật khẩu thô và thực hiện kết nối thành công từ máy cá nhân.
 
 #### Yêu cầu
-*   **Bối cảnh:** Nhằm đảm bảo an toàn vận hành, nhóm DevOps cần phân quyền cho một thực tập sinh mới tên là `sys-viewer` chỉ được phép xem các file log của dịch vụ web Nginx mà không được can thiệp vào các hoạt động hệ thống khác.
-*   **Ràng buộc:** 
-    *   Tạo user `sys-admin` có toàn quyền sudo.
-    *   Tạo user `sys-viewer` chỉ được chạy duy nhất lệnh `cat` đối với các tệp tin lưu trong thư mục `/var/log/nginx/` bằng quyền root. Các lệnh sudo khác đều phải bị chặn hoàn toàn.
-    *   Không sửa trực tiếp file cấu hình gốc `/etc/sudoers`. Hãy tạo file cấu hình riêng trong `/etc/sudoers.d/`.
+*   **Bối cảnh:** Nhóm DevOps của bạn cần tạo một máy chủ thử nghiệm trên hạ tầng đám mây DigitalOcean để chuẩn bị chạy các dự án Web.
+*   **Ràng buộc:**
+    *   Tạo Droplet chạy hệ điều hành **Ubuntu 22.04 LTS** (hoặc bản mới nhất).
+    *   Lựa chọn cấu hình tối giản tiết kiệm chi phí: Basic plan, Regular SSD, CPU Shared (loại rẻ nhất, ví dụ: $4/tháng hoặc $6/tháng).
+    *   Chọn datacenter region gần Việt Nam nhất (Singapore).
+    *   Tại mục Authentication, bắt buộc chọn **SSH Keys**. Tạo mới một cặp khóa SSH từ máy cá nhân của bạn, thêm khóa công khai (Public Key) vào tài khoản DigitalOcean và gán vào Droplet khi khởi tạo.
+    *   Kết nối thành công tới Droplet thông qua SSH từ máy tính cá nhân bằng tài khoản mặc định `root`.
 
 #### Kiểm tra
-*   **Lệnh kiểm tra:** Đăng nhập vào user `sys-viewer` và thực hiện:
-    *   `sudo cat /var/log/nginx/access.log` (phải đọc được nội dung).
-    *   `sudo apt update` hoặc `sudo cat /etc/shadow` (phải bị hệ thống báo lỗi cấm chạy).
-*   **Kết quả mong đợi:** Lệnh xem log hoạt động bình thường, các lệnh khác hiển thị thông báo *sys-viewer is not allowed to execute...*.
+*   **Lệnh kiểm tra:** Chạy lệnh SSH từ Terminal máy cá nhân:
+    ```bash
+    ssh -i /path/to/private_key root@<IP_ADDRESS_DROPLET>
+    ```
+*   **Kết quả mong đợi:** Truy cập thành công vào giao diện dòng lệnh của Droplet mà không cần nhập mật khẩu. Terminal hiển thị thông tin chào mừng của Ubuntu Server.
 
 #### Tiêu chí chấm
 *   **Yêu cầu phải có:**
-    *   File cấu hình phân quyền sudoers được đặt tên là `sys-viewer` nằm trong thư mục `/etc/sudoers.d/`.
-    *   Nội dung file phải chỉ định đường dẫn tuyệt đối của lệnh `cat` và đường dẫn wildcard giới hạn đối với thư mục log Nginx.
+    *   Đường dẫn SSH hoạt động bằng SSH Key.
+    *   Báo cáo Markdown mô tả các bước tạo Droplet và kết nối thành công.
 *   **Yêu cầu không được có:**
-    *   Cấm cấp quyền cho user `sys-viewer` chạy lệnh `cat` trên toàn bộ hệ thống (ví dụ: cấm dùng `/usr/bin/cat *` hoặc `/usr/bin/cat /etc/*`).
-    *   Cấm sửa đổi trực tiếp file gốc `/etc/sudoers`.
+    *   Cấm sử dụng tùy chọn mật khẩu thô (Password Authentication) khi khởi tạo Droplet để tránh rủi ro bảo mật brute-force.
 
 #### Hướng dẫn nộp bài
 *   **Đường dẫn trên GitHub:** `homework/session_02/ex1/`
-*   **Cơ chế nộp:** Học viên nộp tệp tin `sudoers_sys_viewer` (chứa nội dung cấu hình sudoers đã thiết lập) và một file báo cáo Markdown `README.md` mô tả các bước thực hiện kèm đoạn text log kiểm tra thành công/bị từ chối trên Terminal. Hạn chế nộp bằng hình ảnh.
+*   **Cơ chế nộp:** Học viên viết một file `README.md` lưu trong thư mục bài tập mô tả chi tiết các bước tạo Droplet kèm ảnh chụp giao diện quản lý Droplet trên DigitalOcean Console hoặc đoạn log kết nối thành công từ Terminal.
 
 #### Gợi ý/Bệ đỡ
-*   Sử dụng lệnh `sudo visudo -f /etc/sudoers.d/sys-viewer` để tạo file cấu hình.
-*   Cú pháp phân quyền: `sys-viewer ALL=(root) NOPASSWD: /usr/bin/cat /var/log/nginx/*` (dùng `which cat` để xác định đường dẫn lệnh).
+*   Tạo khóa SSH trên máy cá nhân: `ssh-keygen -t ed25519 -C "your_email@example.com"`
+*   Khóa công khai mặc định sẽ nằm ở tệp tin `.pub` (ví dụ: `~/.ssh/id_ed25519.pub`). Copy toàn bộ nội dung file này dán vào DigitalOcean khi được yêu cầu.
 
 ---
 
-### EX2 — Thay đổi cổng kết nối SSH mặc định (Custom SSH Port)
+### EX2 — Khởi tạo User thường và thiết lập đặc quyền quản trị (Sudoers Configuration)
 - **tier:** guided
 - **maps_to_sessions:** [2]
-- **maps_to_lessons:** [ss02_lesson_02, ss02_lesson_03]
-- **owns_skills:** [ssh-port-hardening]
-- **assumes:** [cloud-server-provisioning, infrastructure-security]
+- **maps_to_lessons:** [ss02_lesson_03]
+- **owns_skills:** [linux-user-management]
+- **assumes:** [infrastructure-security]
 
 #### Mục tiêu
-*   Thay đổi cấu hình cổng lắng nghe mặc định của dịch vụ SSH daemon để giảm thiểu các cuộc tấn công quét cổng tự động từ bên ngoài.
-*   Cập nhật cấu hình tường lửa UFW tương ứng để đảm bảo an toàn kết nối.
+*   Tạo một tài khoản người dùng thường (Non-root user) trên Ubuntu Server để hạn chế rủi ro khi thao tác trực tiếp bằng quyền root tối cao.
+*   Cấp đặc quyền quản trị an toàn cho user thường thông qua nhóm `sudo` và sao chép cấu hình SSH Key để đăng nhập.
 
 #### Yêu cầu
-*   **Bối cảnh:** Cổng SSH mặc định (22) liên tục bị dò quét bởi mã độc trên internet. Các bạn cần đổi cổng SSH sang một cổng tùy chỉnh an toàn để tăng mức độ bảo mật cho server.
-*   **Ràng buộc:** 
-    *   Thay đổi cổng lắng nghe của SSH daemon thành cổng `2222`.
-    *   Cấu hình tường lửa UFW mở cổng `2222/tcp` và đóng cổng `22/tcp` cũ.
-    *   Đảm bảo không bị lockout (mất kết nối hoàn toàn khỏi VPS).
+*   **Bối cảnh:** Vận hành hệ thống theo nguyên tắc đặc quyền tối thiểu (Least Privilege), bạn cần tạo tài khoản làm việc riêng có tên là `devops` để thực hiện cấu hình máy chủ hàng ngày thay vì dùng root.
+*   **Ràng buộc:**
+    *   Tạo tài khoản người dùng mới tên là `devops` trên Droplet.
+    *   Thêm user `devops` vào nhóm quản trị `sudo`.
+    *   Sao chép cấu hình SSH Key từ thư mục của root sang thư mục home của user `devops` để cho phép tài khoản này đăng nhập được qua SSH.
+    *   Phân quyền chính xác cho thư mục `.ssh` và file `authorized_keys` của user `devops` để cơ chế bảo mật SSH hoạt động.
 
 #### Kiểm tra
 *   **Lệnh kiểm tra:**
-    *   Từ máy cá nhân, thực hiện kết nối: `ssh -p 2222 devops@<IP_ADDRESS>` (phải kết nối thành công).
-    *   Thực hiện: `ssh devops@<IP_ADDRESS>` (phải báo lỗi Connection refused).
-*   **Kết quả mong đợi:** Đăng nhập thành công qua cổng 2222 bằng khóa SSH Key, không kết nối được qua cổng 22 mặc định.
+    *   Thực hiện đăng nhập từ máy cá nhân: `ssh -i /path/to/private_key devops@<IP_ADDRESS_DROPLET>` (phải thành công).
+    *   Sau khi đăng nhập, chạy lệnh: `sudo whoami` (phải yêu cầu nhập mật khẩu hoặc hiển thị kết quả là `root` thành công).
+*   **Kết quả mong đợi:** Đăng nhập thành công và thực thi được lệnh sudo mà không gặp lỗi phân quyền.
 
 #### Tiêu chí chấm
 *   **Yêu cầu phải có:**
-    *   File cấu hình `sshd_config` được cập nhật chỉ thị `Port 2222`.
-    *   Báo cáo trạng thái tường lửa UFW cho thấy cổng 2222 đã ở trạng thái ALLOW và cổng 22 cũ đã bị xóa.
+    *   User `devops` tồn tại trên hệ thống và thuộc group `sudo`.
+    *   Thư mục `~devops/.ssh` có quyền `700` và file `authorized_keys` có quyền `600`, thuộc sở hữu (owner/group) của user `devops`.
 *   **Yêu cầu không được có:**
-    *   Không bật cấu hình Password Authentication (phải giữ nguyên `PasswordAuthentication no`).
-    *   Không được tắt tường lửa UFW hoàn toàn để đối phó kết nối.
+    *   Không được đổi quyền hoặc sở hữu của các tệp tin trong thư mục của root.
+    *   Cấm chia sẻ khóa private key cho người khác.
 
 #### Hướng dẫn nộp bài
 *   **Đường dẫn trên GitHub:** `homework/session_02/ex2/`
-*   **Cơ chế nộp:** Học viên nộp tệp tin báo cáo `report.md` chứa nội dung dòng cấu hình đã thay đổi trong `/etc/ssh/sshd_config` và đầu ra dạng văn bản của lệnh `sudo ufw status`. Không chấp nhận nộp bằng ảnh chụp màn hình.
+*   **Cơ chế nộp:** Nộp file báo cáo `README.md` mô tả các lệnh Linux đã chạy để tạo user, copy SSH Key, phân quyền thư mục và log Terminal kiểm tra lệnh `sudo whoami`.
 
 #### Gợi ý/Bệ đỡ
-*   Luôn mở cổng `2222/tcp` trên UFW (`sudo ufw allow 2222/tcp`) trước khi khởi động lại dịch vụ SSH (`sudo systemctl restart ssh`).
-*   Không được tắt cửa sổ Terminal đang cấu hình cho đến khi đăng nhập thử thành công trên một cửa sổ Terminal mới.
+*   Sử dụng lệnh `sudo rsync --archive --chown=devops:devops ~/.ssh /home/devops/` để sao chép thư mục SSH từ root sang user mới một cách an toàn và tự động cập nhật owner.
 
 ---
 
-### EX3 — Cấu hình chạy song song nhiều Web Port trên Nginx
+### EX3 — Cài đặt Nginx và cấu hình Website tĩnh cơ bản (Basic Nginx Web Server)
 - **tier:** guided
 - **maps_to_sessions:** [2]
 - **maps_to_lessons:** [ss02_lesson_04]
-- **owns_skills:** [nginx-multi-port]
+- **owns_skills:** [nginx-basic-installation]
 - **assumes:** [nginx-basic-setup]
 
 #### Mục tiêu
-*   Cấu hình chạy đồng thời nhiều website tĩnh khác nhau trên cùng một dịch vụ Nginx bằng cách phân biệt theo cổng kết nối (Port-based Virtual Hosts).
-*   Cấu hình tường lửa UFW tương ứng để mở các cổng tùy chỉnh đó.
+*   Cài đặt dịch vụ Web Server Nginx trên hệ điều hành Ubuntu Server thông qua trình quản lý gói `apt`.
+*   Thiết lập một Server Block tùy chỉnh lắng nghe trên cổng mặc định HTTP (`80`) để phục vụ một trang HTML tĩnh của dự án.
 
 #### Yêu cầu
-*   **Bối cảnh:** Phòng máy của PTIT cần chạy thử nghiệm 2 phiên bản giao diện web tĩnh khác nhau trên cùng một máy chủ ảo mà chưa có tên miền riêng.
-*   **Ràng buộc:** 
-    *   Trang web thứ nhất (`site-one`) đặt tại `/var/www/site-one/html`, lắng nghe ở cổng `8080`.
-    *   Trang web thứ hai (`site-two`) đặt tại `/var/www/site-two/html`, lắng nghe ở cổng `8090`.
-    *   Tường lửa UFW phải mở cổng `8080/tcp` và `8090/tcp`.
-
-#### Kiểm tra
-*   **Lệnh kiểm tra:** Sử dụng công cụ `curl` cục bộ hoặc truy cập trình duyệt:
-    *   `curl http://localhost:8080` (trả về nội dung trang 1).
-    *   `curl http://localhost:8090` (trả về nội dung trang 2).
-*   **Kết quả mong đợi:** Cả hai website đều hiển thị nội dung html tương ứng của chúng.
-
-#### Tiêu chí chấm
-*   **Yêu cầu phải có:**
-    *   2 file cấu hình Server Block riêng biệt trong thư mục `/etc/nginx/sites-available/` và được kích hoạt bằng symlink sang `/etc/nginx/sites-enabled/`.
-    *   Chỉ thị `listen` chỉ định chính xác cổng `8080` và `8090`.
-*   **Yêu cầu không được có:**
-    *   Cấm viết gộp chung 2 block `server` vào một file cấu hình duy nhất để đảm bảo tính module hóa.
-    *   Cấm sửa đổi trực tiếp vào file cấu hình gốc `/etc/nginx/nginx.conf`.
-
-#### Hướng dẫn nộp bài
-*   **Đường dẫn trên GitHub:** `homework/session_02/ex3/`
-*   **Cơ chế nộp:** Học viên nộp 2 file cấu hình Server Block (đặt tên là `site-one.conf` và `site-two.conf`) lên thư mục nộp bài trên GitHub.
-
-#### Gợi ý/Bệ đỡ
-*   Nhớ cấp quyền sở hữu thư mục chứa mã nguồn tĩnh bằng lệnh `chown` để tránh lỗi 403.
-*   Sau khi tạo file cấu hình, chạy `sudo ln -s` để tạo liên kết tượng trưng kích hoạt cấu hình.
-
----
-
-### EX4 — Cấu hình tùy biến trang báo lỗi (Custom Error Page 404)
-- **tier:** guided
-- **maps_to_sessions:** [2]
-- **maps_to_lessons:** [ss02_lesson_04]
-- **owns_skills:** [nginx-custom-error-pages]
-- **assumes:** [nginx-basic-setup]
-
-#### Mục tiêu
-*   Tối ưu trải nghiệm người dùng bằng cách cấu hình Nginx tự động chuyển hướng các yêu cầu truy cập file không tồn tại (Lỗi 404 Not Found) về một trang giao diện HTML tùy biến thân thiện.
-
-#### Yêu cầu
-*   **Bối cảnh:** Thay vì hiển thị trang báo lỗi trắng mặc định khô khan của Nginx khi người dùng nhập sai đường dẫn, các bạn cần thiết lập một trang báo lỗi mang thương hiệu riêng.
-*   **Ràng buộc:** 
-    *   Tạo file giao diện lỗi `custom_404.html` đặt trong thư mục gốc của website.
-    *   Cấu hình Server Block để tự động chuyển hướng các mã lỗi 404 về file này.
-    *   Chỉ cho phép file `custom_404.html` được nạp nội bộ bởi Nginx (`internal;`), không cho phép người dùng truy cập trực tiếp file này bằng URL `http://<IP>/custom_404.html`.
-
-#### Kiểm tra
-*   **Lệnh kiểm tra:** Sử dụng lệnh `curl -I http://localhost/duong-dan-khong-ton-tai` hoặc truy cập trình duyệt.
-*   **Kết quả mong đợi:** Đầu ra hiển thị mã HTTP 404 nhưng nội dung HTML hiển thị trang tùy biến `custom_404.html`.
-
-#### Tiêu chí chấm
-*   **Yêu cầu phải có:**
-    *   Đoạn cấu hình `error_page 404 /custom_404.html;` và block `location = /custom_404.html` có chứa chỉ thị `internal;`.
-    *   File `custom_404.html` thực tế tồn tại trong thư mục gốc.
-*   **Yêu cầu không được có:**
-    *   Tránh cấu hình chuyển hướng làm thay đổi mã trạng thái HTTP từ 404 về 200 (vì điều này sẽ gây sai lệch dữ liệu SEO của website).
-
-#### Hướng dẫn nộp bài
-*   **Đường dẫn trên GitHub:** `homework/session_02/ex4/`
-*   **Cơ chế nộp:** Nộp file cấu hình Server Block đã cập nhật và nội dung file mã nguồn `custom_404.html` lên thư mục bài tập của các bạn trên GitHub.
-
-#### Gợi ý/Bệ đỡ
-*   Cấu hình mẫu:
-   ```nginx
-   error_page 404 /custom_404.html;
-   location = /custom_404.html {
-       root /var/www/ptit-app/html;
-       internal;
-   }
-   ```
-
----
-
-### EX5 — Đặt mật khẩu bảo vệ thư mục nhạy cảm (Nginx Basic Authentication)
-- **tier:** hints
-- **maps_to_sessions:** [2]
-- **maps_to_lessons:** [ss02_lesson_04]
-- **owns_skills:** [nginx-basic-auth]
-- **assumes:** [nginx-basic-setup]
-
-#### Mục tiêu
-*   Thiết lập cơ chế bảo mật xác thực cơ bản (HTTP Basic Authentication) bằng mật khẩu để bảo vệ một đường dẫn thư mục nhạy cảm trên website chống truy cập tự do từ internet.
-
-#### Yêu cầu
-*   **Bối cảnh:** Trang web của các bạn có một thư mục quản trị nội bộ tên là `/admin/` chứa các thông tin nhạy cảm. Các bạn cần cấu hình Nginx yêu cầu nhập đúng tài khoản và mật khẩu mới cho phép truy cập.
-*   **Ràng buộc:** 
-    *   Cài đặt công cụ mã hóa mật khẩu và tạo file lưu thông tin tài khoản `/etc/nginx/.htpasswd`.
-    *   Khởi tạo tài khoản quản trị có tên đăng nhập là `admin`.
-    *   Cấu hình Nginx yêu cầu xác thực đối với duy nhất thư mục `/admin/` trên website, các trang khác vẫn cho phép truy cập công cộng tự do.
-
-#### Kiểm tra
-*   **Lệnh kiểm tra:** Sử dụng lệnh `curl -I http://localhost/admin/`.
-*   **Kết quả mong đợi:** Đầu ra trả về mã trạng thái HTTP `401 Unauthorized` yêu cầu xác thực. Khi kết nối qua trình duyệt, xuất hiện hộp thoại đăng nhập.
-
-#### Tiêu chí chấm
-*   **Yêu cầu phải có:**
-    *   File chứa thông tin mật khẩu được bảo mật ẩn tại `/etc/nginx/.htpasswd` (nội dung mật khẩu phải được băm/mã hóa, không để dạng plain-text).
-    *   Block `location /admin` hoặc `location /admin/` chứa các chỉ thị `auth_basic` và `auth_basic_user_file`.
-*   **Yêu cầu không được có:**
-    *   Cấm đặt file `.htpasswd` bên trong thư mục root của website (để tránh người dùng tải trực tiếp file mật khẩu này về).
-
-#### Hướng dẫn nộp bài
-*   **Đường dẫn trên GitHub:** `homework/session_02/ex5/`
-*   **Cơ chế nộp:** Nộp file cấu hình Server Block và tệp tin `.htpasswd` (đã được thay đổi/xóa mật khẩu thực tế bằng mật khẩu demo như `admin:admin` để đảm bảo an toàn thông tin) lên thư mục bài tập trên GitHub.
-
-#### Gợi ý/Bệ đỡ
-*   Cài đặt gói hỗ trợ tạo mật khẩu bằng lệnh: `sudo apt install apache2-utils -y`.
-*   Sử dụng lệnh `sudo htpasswd -c /etc/nginx/.htpasswd admin` để tạo tài khoản mới.
-
----
-
-### EX6 — Thiết lập môi trường triển khai tối giản (Production-ready Site Setup)
-- **tier:** independent
-- **maps_to_sessions:** [2]
-- **maps_to_lessons:** [ss02_lesson_02, ss02_lesson_03, ss02_lesson_04]
-- **owns_skills:** [nginx-production-setup]
-- **assumes:** [cloud-server-provisioning, infrastructure-security, nginx-basic-setup]
-
-#### Mục tiêu
-*   Tích hợp toàn bộ các kỹ năng đã học để thiết lập một môi trường triển khai ứng dụng thực tế đáp ứng các ràng buộc khắt khe về cấu trúc thư mục, cổng kết nối, ghi log và bảo mật tường lửa.
-
-#### Yêu cầu
-*   **Bối cảnh:** Các bạn được bàn giao một server mới và yêu cầu thiết lập hoàn chỉnh hạ tầng chạy trang web theo cấu hình đóng gói tối ưu để bàn giao cho đội vận hành.
-*   **Ràng buộc:** 
-    1.  Mã nguồn ứng dụng nằm tại thư mục `/opt/my-app/html/`. Cấp quyền sở hữu cho user `devops`.
-    2.  Nginx lắng nghe và phục vụ ứng dụng tại cổng **`9000`**.
-    3.  Tường lửa UFW chặn hoàn toàn cổng `80` và `443` thông thường, chỉ mở cổng SSH tùy chỉnh ở EX2 (hoặc 22 mặc định) và cổng dịch vụ web `9000`.
-    4.  Cấu hình ghi nhật ký truy cập (access log) của website này ra một file riêng đặt tại đường dẫn `/var/log/nginx/my-app.access.log`.
+*   **Bối cảnh:** Bạn cần dựng một website giới thiệu đơn giản cho PTIT chạy trên máy chủ Droplet vừa tạo để người dùng ngoài internet truy cập qua IP của máy chủ.
+*   **Ràng buộc:**
+    *   Cài đặt phiên bản Nginx mới nhất từ repository mặc định của Ubuntu.
+    *   Tạo thư mục chứa mã nguồn tĩnh tại đường dẫn `/var/www/ptit-web/html/` và tạo một file `index.html` đơn giản hiển thị dòng chữ: "Welcome to PTIT DevOps Course - Session 02".
+    *   Tạo file cấu hình Server Block riêng biệt cho trang web tại `/etc/nginx/sites-available/ptit-web.conf` cấu hình lắng nghe cổng `80`, trỏ root về thư mục mã nguồn vừa tạo.
+    *   Kích hoạt Server Block bằng cách tạo liên kết tượng trưng (symlink) sang thư mục `/etc/nginx/sites-enabled/`.
+    *   Xóa hoặc hủy kích hoạt cấu hình trang mặc định `default` của Nginx để tránh xung đột cổng 80.
 
 #### Kiểm tra
 *   **Lệnh kiểm tra:**
-    *   Thực hiện truy cập `curl http://localhost:9000` (phải trả về HTML).
-    *   Refresh trình duyệt kết nối cổng 9000 và chạy lệnh `tail -f /var/log/nginx/my-app.access.log` xem log ghi nhận real-time.
-*   **Kết quả mong đợi:** Website hoạt động bình thường ở cổng 9000, các kết nối vào cổng 80 bị UFW chặn (Connection Timeout), log truy cập được ghi nhận đúng file cấu hình riêng.
+    *   Chạy kiểm tra cú pháp cấu hình Nginx: `sudo nginx -t` (phải hiển thị `syntax is ok`).
+    *   Reload lại Nginx: `sudo systemctl reload nginx`.
+    *   Từ máy cá nhân, truy cập trình duyệt bằng địa chỉ IP: `http://<IP_ADDRESS_DROPLET>`.
+*   **Kết quả mong đợi:** Trình duyệt hiển thị đúng trang HTML tùy biến đã viết với dòng chữ của PTIT.
 
 #### Tiêu chí chấm
 *   **Yêu cầu phải có:**
-    *   File cấu hình Server Block hoàn chỉnh chứa chỉ thị `access_log /var/log/nginx/my-app.access.log;`.
-    *   Thư mục `/opt/my-app/html/` có phân quyền cho phép user `www-data` hoặc nhóm sở hữu tương ứng đọc file.
-    *   Bảng trạng thái UFW chứng minh chỉ mở cổng SSH và cổng 9000.
+    *   File cấu hình `ptit-web.conf` chứa đúng chỉ thị `listen 80;` and `root /var/www/ptit-web/html;`.
+    *   Symlink tồn tại chính xác trong thư mục `sites-enabled`.
 *   **Yêu cầu không được có:**
-    *   Cấm ghi log truy cập chung vào file hệ thống mặc định `/var/log/nginx/access.log`.
+    *   Cấm sửa trực tiếp cấu hình trong file `/etc/nginx/nginx.conf`.
+    *   Tránh cấu hình sai đường dẫn root dẫn đến lỗi `404 Not Found` hoặc lỗi `403 Forbidden`.
+
+#### Hướng dẫn nộp bài
+*   **Đường dẫn trên GitHub:** `homework/session_02/ex3/`
+*   **Cơ chế nộp:** Học viên nộp tệp tin cấu hình Nginx `ptit-web.conf` và file `index.html` lên thư mục bài tập của mình trên GitHub.
+
+#### Gợi ý/Bệ đỡ
+*   Sau khi tạo cấu hình, luôn chạy `sudo nginx -t` để kiểm tra lỗi cú pháp trước khi nạp lại cấu hình dịch vụ.
+
+---
+
+### EX4 — Cấu hình tường lửa bảo vệ máy chủ (UFW & Cloud Firewall Integration)
+- **tier:** guided
+- **maps_to_sessions:** [2]
+- **maps_to_lessons:** [ss02_lesson_03]
+- **owns_skills:** [firewall-setup]
+- **assumes:** [infrastructure-security]
+
+#### Mục tiêu
+*   Thiết lập tường lửa UFW (Uncomplicated Firewall) ngay trong hệ điều hành Ubuntu để lọc các gói tin mạng đi vào.
+*   Kết hợp cấu hình DigitalOcean Cloud Firewall ở tầng hạ tầng để bảo vệ máy chủ từ biên mạng trước khi gói tin chạm đến Droplet.
+
+#### Yêu cầu
+*   **Bối cảnh:** Nhằm tránh máy chủ bị khai thác qua các cổng dịch vụ không sử dụng, bạn cần cấu hình tường lửa 2 lớp để chỉ cho phép lưu lượng SSH và HTTP đi vào Droplet.
+*   **Ràng buộc:**
+    *   **Lớp 1 (UFW trong OS):** Kích hoạt tường lửa UFW, thiết lập chặn mặc định lưu lượng đi vào (`default deny incoming`), cho phép lưu lượng đi ra ngoài (`default allow outgoing`). Mở cổng `22/tcp` (SSH) và `80/tcp` (HTTP).
+    *   **Lớp 2 (DO Cloud Firewall):** Truy cập DigitalOcean Console, tạo một Cloud Firewall mới. Cấu hình Inbound Rules chỉ cho phép: SSH (cổng 22) từ mọi nguồn (hoặc IP của bạn) và HTTP (cổng 80) từ mọi nguồn. Gán Droplet của bạn vào Cloud Firewall này.
+
+#### Kiểm tra
+*   **Lệnh kiểm tra:**
+    *   Trên Droplet, chạy lệnh: `sudo ufw status verbose` (phải hiển thị trạng thái active và danh sách cổng cho phép).
+    *   Từ máy cá nhân, thử kết nối SSH và truy cập HTTP cổng 80 (phải thành công). Thử ping hoặc quét thử một cổng khác không mở (phải bị chặn/timeout).
+*   **Kết quả mong đợi:** UFW hiển thị Active, kết nối dịch vụ an toàn, các cổng khác bị chặn hoàn toàn.
+
+#### Tiêu chí chấm
+*   **Yêu cầu phải có:**
+    *   UFW được kích hoạt trong OS.
+    *   Ảnh chụp cấu hình Cloud Firewall trên DigitalOcean cho thấy Droplet đã được gán vào.
+*   **Yêu cầu không được có:**
+    *   Tuyệt đối không được kích hoạt UFW mà quên mở cổng SSH `22/tcp` trước (gây lockout thiết bị).
+
+#### Hướng dẫn nộp bài
+*   **Đường dẫn trên GitHub:** `homework/session_02/ex4/`
+*   **Cơ chế nộp:** Học viên nộp báo cáo `README.md` kèm ảnh chụp màn hình thiết lập Cloud Firewall trên DigitalOcean Console và đầu ra text của lệnh `sudo ufw status`.
+
+#### Gợi ý/Bệ đỡ
+*   Cú pháp nhanh UFW:
+    ```bash
+    sudo ufw default deny incoming
+    sudo ufw default allow outgoing
+    sudo ufw allow 22/tcp
+    sudo ufw allow 80/tcp
+    sudo ufw enable
+    ```
+
+---
+
+### EX5 — Quản lý quyền sở hữu thư mục Web (Directory Permission Management)
+- **tier:** hints
+- **maps_to_sessions:** [2]
+- **maps_to_lessons:** [ss02_lesson_03, ss02_lesson_04]
+- **owns_skills:** [web-directory-permissions]
+- **assumes:** [infrastructure-security]
+
+#### Mục tiêu
+*   Hiểu rõ cơ chế phân quyền tệp tin và thư mục (Chown & Chmod) trên Linux.
+*   Thiết lập phân quyền tối ưu cho thư mục web tĩnh để user `devops` có thể chỉnh sửa mã nguồn mà không cần dùng quyền `root`/`sudo`, đồng thời dịch vụ Nginx (chạy dưới user `www-data`) vẫn có quyền đọc và hiển thị website.
+
+#### Yêu cầu
+*   **Bối cảnh:** Bạn muốn deploy phiên bản mới của website tĩnh, nhưng hiện tại thư mục `/var/www/ptit-web/` đang thuộc sở hữu của `root`, khiến tài khoản `devops` không thể sửa đổi file trực tiếp.
+*   **Ràng buộc:**
+    *   Thay đổi chủ sở hữu (owner) của thư mục `/var/www/ptit-web/` và toàn bộ nội dung bên trong sang user `devops`.
+    *   Thay đổi nhóm sở hữu (group) sang nhóm `www-data` (nhóm chạy của Nginx).
+    *   Thiết lập quyền truy cập (chmod) sao cho: Chủ sở hữu (`devops`) có quyền đọc và ghi (Read/Write), Nhóm sở hữu (`www-data`) có quyền đọc (Read) để phục vụ web tĩnh, người dùng khác không có quyền truy cập hoặc chỉ được đọc.
+    *   Đảm bảo sau khi phân quyền, Nginx không bị lỗi `403 Forbidden` khi truy cập trang web.
+
+#### Kiểm tra
+*   **Lệnh kiểm tra:**
+    *   Chạy lệnh: `ls -la /var/www/ptit-web/` để kiểm tra phân quyền.
+    *   Đăng nhập bằng user `devops` và thử chạy lệnh chỉnh sửa file: `echo "Update" >> /var/www/ptit-web/html/index.html` mà không dùng `sudo` (phải ghi thành công).
+*   **Kết quả mong đợi:** Ghi file thành công bằng user thường, web hiển thị nội dung mới bình thường mà không bị lỗi Nginx.
+
+#### Tiêu chí chấm
+*   **Yêu cầu phải có:**
+    *   Thư mục và file thuộc sở hữu của `devops:www-data`.
+    *   Quyền truy cập thư mục là `755` hoặc `750` và file là `644` hoặc `640`.
+*   **Yêu cầu không được có:**
+    *   Cấm sử dụng quyền `777` trên bất kỳ file hoặc thư mục nào (đây là lỗ hổng bảo mật nghiêm trọng).
+
+#### Hướng dẫn nộp bài
+*   **Đường dẫn trên GitHub:** `homework/session_02/ex5/`
+*   **Cơ chế nộp:** Nộp báo cáo `README.md` hiển thị kết quả đầu ra của lệnh `ls -la /var/www/ptit-web/` và các bước kiểm tra ghi file từ user `devops`.
+
+#### Gợi ý/Bệ đỡ
+*   *Gợi ý:* Sử dụng các lệnh `chown -R` và `chmod -R` kết hợp để phân quyền đệ quy cho toàn bộ thư mục web.
+
+---
+
+### EX6 — Thiết lập hạ tầng ứng dụng tĩnh hoàn chỉnh (Production-ready Simple Setup)
+- **tier:** independent
+- **maps_to_sessions:** [2]
+- **maps_to_lessons:** [ss02_lesson_02, ss02_lesson_03, ss02_lesson_04]
+- **owns_skills:** [production-vps-provisioning]
+- **assumes:** [cloud-server-provisioning, infrastructure-security, nginx-basic-setup]
+
+#### Mục tiêu
+*   Tích hợp toàn bộ kiến thức và kỹ năng đã học trong Session 2 để dựng một máy chủ ảo, phân quyền bảo mật, cài đặt Nginx và thiết lập các lớp tường lửa hoàn chỉnh theo chuẩn thực tế.
+
+#### Yêu cầu
+*   **Bối cảnh:** Bạn được giao nhiệm vụ thiết lập một máy chủ Droplet mới trên DigitalOcean để vận hành trang Landing Page chính thức của một dự án PTIT. Hãy tự thực hiện từ đầu đến cuối các thiết lập hạ tầng.
+*   **Ràng buộc:**
+    1.  Tạo Droplet mới trên DigitalOcean bằng SSH Key.
+    2.  Tạo user quản trị thường tên là `ptit-admin` thuộc nhóm `sudo`, copy SSH Key để tài khoản này kết nối được.
+    3.  Cài đặt Web Server Nginx.
+    4.  Tạo thư mục ứng dụng tại `/var/www/landing-page/html/`. Gán sở hữu cho `ptit-admin:www-data`.
+    5.  Tạo file cấu hình Server Block riêng chạy ở cổng `80` mặc định, trỏ root về thư mục trên.
+    6.  Kích hoạt Server Block và tắt trang mặc định của Nginx.
+    7.  Cấu hình tường lửa UFW và DigitalOcean Cloud Firewall chỉ cho phép kết nối cổng `22` và `80`.
+
+#### Kiểm tra
+*   **Lệnh kiểm tra:** Học viên tự thiết kế kịch bản kiểm tra (ví dụ: dùng curl, truy cập trình duyệt, check log, check status dịch vụ) và ghi nhận kết quả.
+*   **Kết quả mong đợi:** Tất cả các thành phần hoạt động trơn tru, bảo mật và truy cập thành công website từ internet thông qua IP Droplet.
+
+#### Tiêu chí chấm
+*   **Yêu cầu phải có:**
+    *   File cấu hình Nginx Server Block và file mã nguồn trang Landing Page mẫu.
+    *   Tài liệu hướng dẫn (README.md) mô tả toàn bộ vòng đời thiết lập từ Droplet ban đầu cho tới website hoạt động trực tuyến.
+*   **Yêu cầu không được có:**
+    *   Không để lại các lỗ hổng như cổng SSH mặc định mở kèm Password Authentication, hay thư mục web bị phân quyền `777`.
 
 #### Hướng dẫn nộp bài
 *   **Đường dẫn trên GitHub:** `homework/session_02/ex6/`
-*   **Cơ chế nộp:** Học viên nộp file cấu hình Server Block hoàn chỉnh (`my-app.conf`) và một file báo cáo Markdown `README.md` trình bày chi tiết cấu trúc, các lệnh UFW đã chạy, cấu hình log và kết quả xác thực bằng text.
+*   **Cơ chế nộp:** Học viên nộp tệp tin cấu hình Nginx và file báo cáo chi tiết `README.md` lên thư mục bài tập của mình trên GitHub.
 
 #### Gợi ý/Bệ đỡ
-*   *Không có gợi ý cấu hình bước thực hiện.* Học viên tự nghiên cứu tài liệu chính thức của Nginx và UFW để hoàn thành.
+*   *Không có gợi ý cấu hình bước thực hiện.* Học viên tự chủ động hệ thống hóa kiến thức để thực hành độc lập bài tập này.

@@ -2,7 +2,7 @@
 schema_version: 1
 id: ss02_quiz_warm_up
 type: quiz
-status: draft
+status: approved
 course_id: devops-basic
 session: 2
 unit: 0
@@ -25,7 +25,7 @@ source: generated
 pm_ref: Session 02 / quiz_warm_up
 language: vi
 created: '2026-07-15'
-updated: '2026-07-15'
+updated: '2026-07-16'
 quiz_kind: warm_up
 question_count: 30
 maps_to:
