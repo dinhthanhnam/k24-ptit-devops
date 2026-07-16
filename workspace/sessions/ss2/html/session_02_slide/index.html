@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Session 02: Virtual Private Server (VPS) | Rikkei Education</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hssf-slides@0.2.1/dist/hssf.min.css" />
+  <link rel="stylesheet" href="./styles/deck.css" />
+</head>
+
+<body class="hssf-body">
+  <div class="hssf-canvas" data-hssf-canvas id="deck" tabindex="0" role="region" aria-roledescription="slide deck"
+    aria-label="Session 02: Virtual Private Server (VPS)">
+    <div class="hssf-progress" data-hssf-progress aria-hidden="true">
+      <div class="hssf-progress__bar" data-hssf-progress-bar></div>
+    </div>
+    <div class="hssf-live hssf-sr-only" data-hssf-live aria-live="polite" aria-atomic="true"></div>
+
+    <div class="hssf-stage-wrap">
+      <div class="hssf-stage" data-hssf-stage>
+
+        <!-- 1. Title -->
+        <section class="hssf-slide hssf-slide--title is-active" data-hssf-slide data-hssf-label="Title"
+          aria-hidden="false">
+          <div class="hssf-slide__inner">
+            <div class="hssf-title-block hssf-title-block--center">
+              <p class="hssf-title-block__eyebrow">Session 02</p>
+              <h1 class="hssf-title-block__title">Virtual Private Server (VPS)</h1>
+              <p class="hssf-title-block__meta">Ảo Hóa & Hạ Tầng Cloud Server · HSSF</p>
+            </div>
+          </div>
+          <footer class="hssf-footer">
+            <span class="hssf-footer__copy">© 2026 By Rikkei Academy - Rikkei Education - All rights reserved.</span>
+            <span class="hssf-footer__page" data-hssf-page></span>
+          </footer>
+        </section>
+
+        <!-- 2. Objectives -->
+        <section class="hssf-slide hssf-slide--content" data-hssf-slide data-hssf-label="Objectives" aria-hidden="true">
+          <div class="hssf-slide__inner">
+            <header class="hssf-header">
+              <div class="hssf-header__accent" aria-hidden="true"></div>
+              <h2 class="hssf-header__title">Mục tiêu Session 02</h2>
+              <p class="hssf-header__subtitle">Kiến thức và kỹ năng cần đạt</p>
+            </header>
+            <ul class="hssf-list">
+              <li data-hssf-fragment>Hiểu cơ chế ảo hóa và vai trò của lớp Hypervisor.</li>
+              <li data-hssf-fragment>Tự tay khởi tạo và kết nối Cloud VM thông qua SSH Key bảo mật.</li>
+              <li data-hssf-fragment>Vận hành tường lửa máy chủ UFW để kiểm soát cổng dịch vụ.</li>
+              <li data-hssf-fragment>Cài đặt, quản lý Nginx Web Server và Server Blocks cơ bản.</li>
+            </ul>
+
+            <div class="deck-spacer"></div>
+
+            <aside class="hssf-callout hssf-callout--tip">
+              <p class="hssf-callout__label">Kỹ năng</p>
+              <p class="hssf-callout__body">
+                Học viên sẽ có khả năng tự vận hành một máy chủ độc lập trên internet thực tế.
+              </p>
+            </aside>
+          </div>
+          <footer class="hssf-footer">
+            <span class="hssf-footer__copy">© 2026 By Rikkei Academy - Rikkei Education - All rights reserved.</span>
+            <span class="hssf-footer__page" data-hssf-page></span>
+          </footer>
+        </section>
+
+        <!-- 3. Agenda -->
+        <section class="hssf-slide hssf-slide--content" data-hssf-slide data-hssf-label="Agenda" aria-hidden="true">
+          <div class="hssf-slide__inner">
+            <header class="hssf-header">
+              <div class="hssf-header__accent" aria-hidden="true"></div>
+              <h2 class="hssf-header__title">Lộ trình bài học</h2>
+              <p class="hssf-header__subtitle">4 nội dung cốt lõi của buổi học</p>
+            </header>
+            <ol class="hssf-steps">
+              <li class="hssf-steps__item" data-hssf-fragment>
+                <span class="hssf-steps__num">01</span>
+                <div class="hssf-steps__content">
+                  <h3 class="hssf-steps__title">Khái niệm ảo hóa</h3>
+                  <p class="hssf-steps__desc">Hypervisor và phân loại ảo hóa máy chủ.</p>
+                </div>
+              </li>
+              <li class="hssf-steps__item" data-hssf-fragment>
+                <span class="hssf-steps__num">02</span>
+                <div class="hssf-steps__content">
+                  <h3 class="hssf-steps__title">Khởi tạo Cloud Server</h3>
+                  <p class="hssf-steps__desc">Lựa chọn cấu hình VPS và cấu hình xác thực SSH Key.</p>
+                </div>
+              </li>
+              <li class="hssf-steps__item" data-hssf-fragment>
+                <span class="hssf-steps__num">03</span>
+                <div class="hssf-steps__content">
+                  <h3 class="hssf-steps__title">Cơ chế bảo mật hạ tầng</h3>
+                  <p class="hssf-steps__desc">Hardening SSH và thiết lập tường lửa UFW.</p>
+                </div>
+              </li>
+              <li class="hssf-steps__item" data-hssf-fragment>
+                <span class="hssf-steps__num">04</span>
+                <div class="hssf-steps__content">
+                  <h3 class="hssf-steps__title">Cài đặt Web Server Nginx</h3>
+                  <p class="hssf-steps__desc">Quản lý dịch vụ, cấu hình file tĩnh và Server Blocks.</p>
+                </div>
+              </li>
+            </ol>
+          </div>
+          <footer class="hssf-footer">
+            <span class="hssf-footer__copy">© 2026 By Rikkei Academy - Rikkei Education - All rights reserved.</span>
+            <span class="hssf-footer__page" data-hssf-page></span>
+          </footer>
+        </section>
+
+        <!-- 4. Section 1 Divider -->
+        <section class="hssf-slide hssf-slide--section" data-hssf-slide data-hssf-label="Section 1" aria-hidden="true">
+          <div class="hssf-slide__inner">
+            <div class="hssf-section-block">
+              <span class="hssf-section-block__num">01</span>
+              <h2 class="hssf-section-block__title">Khái niệm ảo hóa (Virtualization)</h2>
+            </div>
+          </div>
+          <footer class="hssf-footer hssf-footer--light">
+            <span class="hssf-footer__copy">© 2026 By Rikkei Academy - Rikkei Education - All rights reserved.</span>
+            <span class="hssf-footer__page" data-hssf-page></span>
+          </footer>
+        </section>
+
+        <!-- 5. Problem Bare-metal -->
+        <section class="hssf-slide hssf-slide--content" data-hssf-slide data-hssf-label="Problem Bare-metal"
+          aria-hidden="true">
+          <div class="hssf-slide__inner">
+            <header class="hssf-header">
+              <div class="hssf-header__accent" aria-hidden="true"></div>
+              <h2 class="hssf-header__title">Đặt vấn đề: Triển khai truyền thống</h2>
+              <p class="hssf-header__subtitle">Hạn chế của máy chủ vật lý (Bare-metal)</p>
+            </header>
+            <div class="hssf-columns">
+              <div class="hssf-columns__col">
+                <div class="hssf-heading">
+                  <p class="hssf-heading__kicker">Vấn đề</p>
+                  <h3 class="hssf-heading__title">Cài trực tiếp lên phần cứng</h3>
+                </div>
+                <p>Một máy chủ vật lý chạy duy nhất một hệ điều hành và phục vụ ứng dụng thô dẫn đến nhiều điểm nghẽn.
+                </p>
+              </div>
+              <div class="deck-spacer"></div>
+              <div class="hssf-columns__col">
+                <ul class="hssf-list">
+                  <li data-hssf-fragment><strong>Lãng phí tài nguyên:</strong> Chỉ sử dụng 10% - 15% năng lực thật sự
+                    của CPU/RAM.</li>
+                  <li data-hssf-fragment><strong>Triển khai chậm chạp:</strong> Mua sắm, đi dây, lắp rack mất nhiều
+                    tuần.</li>
+                  <li data-hssf-fragment><strong>Thiếu tính độc lập:</strong> Xung đột dependency khi chạy nhiều app.
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <footer class="hssf-footer">
+            <span class="hssf-footer__copy">© 2026 By Rikkei Academy - Rikkei Education - All rights reserved.</span>
+            <span class="hssf-footer__page" data-hssf-page></span>
+          </footer>
+        </section>
+
+        <!-- 6. Virtualization Basics -->
+        <section class="hssf-slide hssf-slide--content" data-hssf-slide data-hssf-label="Virtualization Definition"
+          aria-hidden="true">
+          <div class="hssf-slide__inner">
+            <header class="hssf-header">
+              <div class="hssf-header__accent" aria-hidden="true"></div>
+              <h2 class="hssf-header__title">Công nghệ ảo hóa là gì?</h2>
+              <p class="hssf-header__subtitle">Trừu tượng hóa tài nguyên vật lý</p>
+            </header>
+            <div class="hssf-columns">
+              <div class="hssf-columns__col" style="flex: 1;">
+                <p style="line-height: 1.6;">
+                  Ảo hóa (Virtualization) là việc chèn một lớp phần mềm trung gian lên trên phần cứng vật lý để phân
+                  tách nó thành các máy ảo (Virtual Machine - VM) hoàn chỉnh chạy độc lập.
+                </p>
+                <div class="deck-spacer"></div>
+                <aside class="hssf-callout hssf-callout--info">
+                  <p class="hssf-callout__label">Lịch sử</p>
+                  <p class="hssf-callout__body">Khởi nguồn từ 1967 (CP-40 trên Mainframe IBM) và phát triển bùng nổ bởi
+                    VMware từ năm 1998.</p>
+                </aside>
+              </div>
+              <div class="hssf-columns__col"
+                style="flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 1.5rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15);">
+                <div
+                  style="text-align: center; font-weight: bold; border: 1px dashed rgba(255,255,255,0.3); padding: 0.5rem; margin-bottom: 0.5rem; border-radius: 4px;">
+                  Máy ảo (Guest OS)</div>
+                <div
+                  style="text-align: center; font-weight: bold; border: 1px dashed rgba(255,255,255,0.3); padding: 0.5rem; margin-bottom: 0.5rem; border-radius: 4px;">
+                  Lớp ảo hóa (Hypervisor)</div>
+                <div
+                  style="text-align: center; font-weight: bold; border: 1px dashed rgba(255,255,255,0.3); padding: 0.5rem; border-radius: 4px;">
+                  Phần cứng vật lý (Host)</div>
+              </div>
+            </div>
+          </div>
+          <footer class="hssf-footer">
+            <span class="hssf-footer__copy">© 2026 By Rikkei Academy - Rikkei Education - All rights reserved.</span>
+            <span class="hssf-footer__page" data-hssf-page></span>
+          </footer>
+        </section>
+
+        <!-- 7. Hypervisor Core -->
+        <section class="hssf-slide hssf-slide--content" data-hssf-slide data-hssf-label="Hypervisor" aria-hidden="true">
+          <div class="hssf-slide__inner">
+            <header class="hssf-header">
+              <div class="hssf-header__accent" aria-hidden="true"></div>
+              <h2 class="hssf-header__title">Thành phần cốt lõi: Hypervisor</h2>
+              <p class="hssf-header__subtitle">Trình quản lý máy ảo (VMM)</p>
+            </header>
+            <ul class="hssf-list">
+              <li data-hssf-fragment><strong>Chức năng:</strong> Trừu tượng hóa phần cứng vật lý, phân phối CPU/RAM/Disk
+                linh hoạt cho các
+                VM.</li>
+              <li data-hssf-fragment><strong>Bảo mật:</strong> Đảm bảo tính cô lập (isolation) giữa các máy ảo, tránh
+                truy cập chéo bộ nhớ.</li>
+              <li data-hssf-fragment><strong>Quyền điều khiển (CPU Rings):</strong> CPU phân chia các quyền xử lý từ
+                Ring 0 (cao nhất) tới Ring 3 (thấp nhất). Hypervisor quản lý & dịch các lệnh nhạy cảm của Guest OS thông
+                qua Binary Translation hoặc phần cứng hỗ trợ (Intel VT-x, AMD-V).</li>
+            </ul>
+          </div>
+          <footer class="hssf-footer">
+            <span class="hssf-footer__copy">© 2026 By Rikkei Academy - Rikkei Education - All rights reserved.</span>
+            <span class="hssf-footer__page" data-hssf-page></span>
+          </footer>
+        </section>
+
+        <!-- 8. Hypervisor Classification -->
+        <section class="hssf-slide hssf-slide--content" data-hssf-slide data-hssf-label="Hypervisor Compare"
+          aria-hidden="true">
+          <div class="hssf-slide__inner">
+            <header class="hssf-header">
+              <div class="hssf-header__accent" aria-hidden="true"></div>
+              <h2 class="hssf-header__title">Hypervisor Type 1 vs Type 2</h2>
+              <p class="hssf-header__subtitle">Phân loại cấu trúc ảo hóa</p>
+            </header>
+            <div class="hssf-compare">
+              <div class="hssf-compare__col hssf-compare__col--pros">
+                <h3 class="hssf-compare__title">Type 1 (Bare-metal)</h3>
+                <ul class="hssf-list">
+                  <li>Cài trực tiếp lên phần cứng vật lý.</li>
+                  <li>Hiệu năng tiệm cận phần cứng thực tế.</li>
+                  <li>Phù hợp cho Cloud & Data Center.</li>
+                  <li>Ví dụ: KVM, VMware ESXi, Hyper-V.</li>
+                </ul>
+              </div>
+              <div class="hssf-compare__col hssf-compare__col--cons">
+                <h3 class="hssf-compare__title">Type 2 (Hosted)</h3>
+                <ul class="hssf-list">
+                  <li>Chạy trên một hệ điều hành nền (Host OS).</li>
+                  <li>Hiệu năng kém hơn do qua lớp OS trung gian.</li>
+                  <li>Phù hợp cho môi trường Dev/Test cá nhân.</li>
+                  <li>Ví dụ: VirtualBox, VMware Workstation.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <footer class="hssf-footer">
+            <span class="hssf-footer__copy">© 2026 By Rikkei Academy - Rikkei Education - All rights reserved.</span>
+            <span class="hssf-footer__page" data-hssf-page></span>
+          </footer>
+        </section>
+
+        <!-- 9. Section 2 Divider -->
+        <section class="hssf-slide hssf-slide--section" data-hssf-slide data-hssf-label="Section 2" aria-hidden="true">
+          <div class="hssf-slide__inner">
+            <div class="hssf-section-block">
+              <span class="hssf-section-block__num">02</span>
+              <h2 class="hssf-section-block__title">Khởi tạo Cloud Server thực tế</h2>
+            </div>
+          </div>
+          <footer class="hssf-footer hssf-footer--light">
+            <span class="hssf-footer__copy">© 2026 By Rikkei Academy - Rikkei Education - All rights reserved.</span>
+            <span class="hssf-footer__page" data-hssf-page></span>
+          </footer>
+        </section>
+
+        <!-- 10. Cloud Server Introduction -->
+        <section class="hssf-slide hssf-slide--content" data-hssf-slide data-hssf-label="Cloud Server Problem"
+          aria-hidden="true">
+          <div class="hssf-slide__inner">
+            <header class="hssf-header">
+              <div class="hssf-header__accent" aria-hidden="true"></div>
+              <h2 class="hssf-header__title">Đặt vấn đề: Triển khai trên Cloud</h2>
+              <p class="hssf-header__subtitle">Đáp ứng nhu cầu tài nguyên tức thời</p>
+            </header>
+            <p style="line-height: 1.6; margin-bottom: 2rem;">
+              Trong phát triển hiện đại, kỹ sư DevOps không cần mua và lắp đặt máy chủ vật lý. Thay vào đó, ta sử dụng
+              **Cloud Server** để cấp phát tài nguyên ảo hóa linh hoạt chỉ trong vài phút qua Internet.
+            </p>
+            <aside class="hssf-callout hssf-callout--info">
+              <p class="hssf-callout__label">Khái niệm</p>
+              <p class="hssf-callout__body">
+                <strong>Virtual Private Server (VPS):</strong> Là một máy ảo được phân tách từ máy chủ vật lý lớn, chạy
+                hệ điều hành, tài nguyên độc lập và sở hữu IP tĩnh riêng.
+              </p>
+            </aside>
+          </div>
+          <footer class="hssf-footer">
+            <span class="hssf-footer__copy">© 2026 By Rikkei Academy - Rikkei Education - All rights reserved.</span>
+            <span class="hssf-footer__page" data-hssf-page></span>
+          </footer>
+        </section>
+
+        <!-- 11. VPS Providers -->
+        <section class="hssf-slide hssf-slide--content" data-hssf-slide data-hssf-label="Cloud Providers"
+          aria-hidden="true">
+          <div class="hssf-slide__inner">
+            <header class="hssf-header">
+              <div class="hssf-header__accent" aria-hidden="true"></div>
+              <h2 class="hssf-header__title">Các nhà cung cấp đám mây lớn</h2>
+              <p class="hssf-header__subtitle">Lựa chọn nhà cung cấp phù hợp</p>
+            </header>
+            <div class="hssf-columns">
+              <div class="hssf-columns__col">
+                <h3 style="margin-bottom: 1rem;">Quốc tế (Global)</h3>
+                <ul class="hssf-list">
+                  <li>Amazon Web Services (AWS)</li>
+                  <li>Google Cloud Platform (GCP)</li>
+                  <li>DigitalOcean (Được chọn để thực hành Lab)</li>
+                  <li>Akamai (Linode) / Vultr</li>
+                </ul>
+              </div>
+              <div class="hssf-columns__col">
+                <h3 style="margin-bottom: 1rem;">Trong nước (Local)</h3>
+                <ul class="hssf-list">
+                  <li>VNG Cloud</li>
+                  <li>Viettel IDC</li>
+                  <li>FPT Smart Cloud</li>
+                  <li>CMC Cloud</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <footer class="hssf-footer">
+            <span class="hssf-footer__copy">© 2026 By Rikkei Academy - Rikkei Education - All rights reserved.</span>
+            <span class="hssf-footer__page" data-hssf-page></span>
+          </footer>
+        </section>
+
+        <!-- 12. VPS Specifications -->
+        <section class="hssf-slide hssf-slide--content" data-hssf-slide data-hssf-label="VPS Spec" aria-hidden="true">
+          <div class="hssf-slide__inner">
+            <header class="hssf-header">
+              <div class="hssf-header__accent" aria-hidden="true"></div>
+              <h2 class="hssf-header__title">Thông số cấu hình của Cloud Server</h2>
+              <p class="hssf-header__subtitle">Các chỉ số phần cứng cần lưu ý khi tạo VPS</p>
+            </header>
+            <div class="hssf-grid" style="grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.5rem;">
+              <div class="hssf-card"
+                style="padding: 1rem; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px;">
+                <h4 style="margin: 0;">vCPU (Virtual CPU)</h4>
+                <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; color: #a0aec0;">Đơn vị xử lý ảo hóa trung tâm.</p>
+              </div>
+              <div class="hssf-card"
+                style="padding: 1rem; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px;">
+                <h4 style="margin: 0;">RAM (Random Access Memory)</h4>
+                <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; color: #a0aec0;">Khi thiếu RAM, HĐH sẽ kích hoạt cơ
+                  chế OOM-Killer tắt các app.</p>
+              </div>
+              <div class="hssf-card"
+                style="padding: 1rem; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px;">
+                <h4 style="margin: 0;">Storage</h4>
+                <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; color: #a0aec0;">Sử dụng ổ SSD/NVMe ảo hóa để tăng
+                  tốc IOPS đọc/ghi dữ liệu.</p>
+              </div>
+              <div class="hssf-card"
+                style="padding: 1rem; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px;">
+                <h4 style="margin: 0;">Region / Zone</h4>
+                <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; color: #a0aec0;">Vị trí vật lý của DC. Nên chọn gần
+                  user nhất (VD: Singapore).</p>
+              </div>
+            </div>
+          </div>
+          <footer class="hssf-footer">
+            <span class="hssf-footer__copy">© 2026 By Rikkei Academy - Rikkei Education - All rights reserved.</span>
+            <span class="hssf-footer__page" data-hssf-page></span>
+          </footer>
+        </section>
+
+        <!-- 13. SSH Key Security -->
+        <section class="hssf-slide hssf-slide--content" data-hssf-slide data-hssf-label="SSH Key" aria-hidden="true">
+          <div class="hssf-slide__inner">
+            <header class="hssf-header">
+              <div class="hssf-header__accent" aria-hidden="true"></div>
+              <h2 class="hssf-header__title">Cơ chế xác thực bằng SSH Key</h2>
+              <p class="hssf-header__subtitle">Mật mã học khóa công khai (Public-key Cryptography)</p>
+            </header>
+            <div class="hssf-columns">
+              <div class="hssf-columns__col">
+                <p>SSH Key giúp đăng nhập an toàn, vô hiệu hóa hoàn toàn nguy cơ bị dò quét brute-force mật khẩu truyền
+                  thống.</p>
+                <ul class="hssf-list">
+                  <li><strong>Private Key (`id_ed25519`):</strong> Giữ bí mật trên máy tính local.</li>
+                  <li><strong>Public Key (`id_ed25519.pub`):</strong> Lưu trữ trên Cloud VM để xác thực quyền kết nối.
+                  </li>
+                </ul>
+              </div>
+              <div class="hssf-columns__col">
+                <aside class="hssf-callout hssf-callout--info">
+                  <p class="hssf-callout__label">Thuật toán</p>
+                  <p class="hssf-callout__body">
+                    Sử dụng <strong>Ed25519</strong> thay thế cho RSA do hiệu năng cao hơn, bảo mật tốt và tệp khóa ngắn
+                    gọn.
+                  </p>
+                </aside>
+              </div>
+            </div>
+          </div>
+          <footer class="hssf-footer">
+            <span class="hssf-footer__copy">© 2026 By Rikkei Academy - Rikkei Education - All rights reserved.</span>
+            <span class="hssf-footer__page" data-hssf-page></span>
+          </footer>
+        </section>
+
+        <!-- 14. Section 3 Divider -->
+        <section class="hssf-slide hssf-slide--section" data-hssf-slide data-hssf-label="Section 3" aria-hidden="true">
+          <div class="hssf-slide__inner">
+            <div class="hssf-section-block">
+              <span class="hssf-section-block__num">03</span>
+              <h2 class="hssf-section-block__title">Cơ chế bảo mật cho Infrastructure</h2>
+            </div>
+          </div>
+          <footer class="hssf-footer hssf-footer--light">
+            <span class="hssf-footer__copy">© 2026 By Rikkei Academy - Rikkei Education - All rights reserved.</span>
+            <span class="hssf-footer__page" data-hssf-page></span>
+          </footer>
+        </section>
+
+        <!-- 15. Security Problem -->
+        <section class="hssf-slide hssf-slide--content" data-hssf-slide data-hssf-label="Security Problem"
+          aria-hidden="true">
+          <div class="hssf-slide__inner">
+            <header class="hssf-header">
+              <div class="hssf-header__accent" aria-hidden="true"></div>
+              <h2 class="hssf-header__title">Đặt vấn đề: Mối đe dọa trực tuyến</h2>
+              <p class="hssf-header__subtitle">Tại sao cần gia cố bảo mật máy chủ ngay lập tức?</p>
+            </header>
+            <div class="hssf-columns">
+              <div class="hssf-columns__col">
+                <p>Một máy chủ thô khi vừa online có địa chỉ IP công cộng sẽ liên tục bị các công cụ tự động (botnet) dò
+                  quét cổng và mật khẩu.</p>
+                <aside class="hssf-callout hssf-callout--danger" style="margin-top: 1rem;">
+                  <p class="hssf-callout__label">Nguy cơ</p>
+                  <p class="hssf-callout__body">
+                    Mở tất cả các cổng và dùng mật khẩu đăng nhập yếu sẽ khiến máy chủ bị hack và lợi dụng đào coin chỉ
+                    sau vài giờ.
+                  </p>
+                </aside>
+              </div>
+              <div class="hssf-columns__col">
+                <ul class="hssf-list">
+                  <li><strong>Tài khoản root mặc định:</strong> Dễ bị brute-force đoán password.</li>
+                  <li><strong>Không có Firewall:</strong> Lộ diện các tiến trình nội bộ ra môi trường mạng internet.
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <footer class="hssf-footer">
+            <span class="hssf-footer__copy">© 2026 By Rikkei Academy - Rikkei Education - All rights reserved.</span>
+            <span class="hssf-footer__page" data-hssf-page></span>
+          </footer>
+        </section>
+
+        <!-- 16. SSH Hardening -->
+        <section class="hssf-slide hssf-slide--content" data-hssf-slide data-hssf-label="SSH Hardening"
+          aria-hidden="true">
+          <div class="hssf-slide__inner">
+            <header class="hssf-header">
+              <div class="hssf-header__accent" aria-hidden="true"></div>
+              <h2 class="hssf-header__title">SSH Hardening (Gia cố SSH)</h2>
+              <p class="hssf-header__subtitle">Hạn chế tối đa bề mặt tấn công qua cổng 22</p>
+            </header>
+            <div class="hssf-columns">
+              <div class="hssf-columns__col" style="flex: 1.1;">
+                <ul class="hssf-list">
+                  <li>Tạo non-root user và chỉ nâng quyền qua `sudo`.</li>
+                  <li><strong>Vô hiệu hóa password:</strong> Buộc sử dụng SSH Key.</li>
+                  <li><strong>Tắt login root trực tiếp:</strong> Kẻ tấn công không thể chiếm quyền quản trị tối cao ngay
+                    từ bước đầu.</li>
+                </ul>
+              </div>
+              <div class="hssf-columns__col" style="flex: 0.9;">
+                <div class="hssf-code">
+                  <div class="hssf-code__header">
+                    <span class="hssf-code__filename">/etc/ssh/sshd_config</span>
+                    <span class="hssf-code__lang">config</span>
+                  </div>
+                  <pre class="hssf-code__pre"><code class="hssf-code__code language-bash">PermitRootLogin no
+PasswordAuthentication no</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          <footer class="hssf-footer">
+            <span class="hssf-footer__copy">© 2026 By Rikkei Academy - Rikkei Education - All rights reserved.</span>
+            <span class="hssf-footer__page" data-hssf-page></span>
+          </footer>
+        </section>
+
+        <!-- 17. Firewall Principle -->
+        <section class="hssf-slide hssf-slide--content" data-hssf-slide data-hssf-label="Firewall" aria-hidden="true">
+          <div class="hssf-slide__inner">
+            <header class="hssf-header">
+              <div class="hssf-header__accent" aria-hidden="true"></div>
+              <h2 class="hssf-header__title">Cơ chế hoạt động của Firewall</h2>
+              <p class="hssf-header__subtitle">Bộ lọc kiểm soát lưu lượng mạng ra vào</p>
+            </header>
+            <div class="hssf-columns">
+              <div class="hssf-columns__col">
+                <h3 style="margin-bottom: 1rem;">Default Deny Incoming</h3>
+                <p>Mặc định chặn toàn bộ các gói tin đi vào. Chỉ cho phép các cổng dịch vụ được khai báo tường minh hoạt động.</p>
+              </div>
+              <div class="hssf-columns__col">
+                <ul class="hssf-list">
+                  <li><strong>Cổng 22 (SSH):</strong> Chỉ mở cho IP của quản trị viên (hoặc mở rộng có kiểm soát).</li>
+                  <li><strong>Cổng 80 (HTTP) & 443 (HTTPS):</strong> Mở rộng rãi cho người dùng truy cập web.</li>
+                  <li><strong>Default Allow Outgoing:</strong> Cho phép máy chủ tự do kết nối ra ngoài để cập nhật hệ thống.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <footer class="hssf-footer">
+            <span class="hssf-footer__copy">© 2026 By Rikkei Academy - Rikkei Education - All rights reserved.</span>
+            <span class="hssf-footer__page" data-hssf-page></span>
+          </footer>
+        </section>
+
+        <!-- 18. UFW Config -->
+        <section class="hssf-slide hssf-slide--content" data-hssf-slide data-hssf-label="UFW Config" aria-hidden="true">
+          <div class="hssf-slide__inner">
+            <header class="hssf-header">
+              <div class="hssf-header__accent" aria-hidden="true"></div>
+              <h2 class="hssf-header__title">Thực hành cấu hình UFW trên Ubuntu</h2>
+              <p class="hssf-header__subtitle">Uncomplicated Firewall - Tường lửa tích hợp</p>
+            </header>
+            <div class="hssf-columns">
+              <div class="hssf-columns__col" style="flex: 1;">
+                <p>Các lệnh khai báo thiết lập quy tắc tường lửa căn bản trước khi kích hoạt:</p>
+                <ul class="hssf-list" style="font-size: 0.95rem;">
+                  <li>1. Cho phép cổng SSH.</li>
+                  <li>2. Cho phép cổng Web (HTTP/HTTPS).</li>
+                  <li>3. Kích hoạt UFW.</li>
+                </ul>
+              </div>
+              <div class="hssf-columns__col" style="flex: 1;">
+                <div class="hssf-code">
+                  <div class="hssf-code__header">
+                    <span class="hssf-code__filename">ufw_setup.sh</span>
+                    <span class="hssf-code__lang">bash</span>
+                  </div>
+                  <pre class="hssf-code__pre"><code class="hssf-code__code language-bash">sudo ufw allow 22/tcp
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+sudo ufw enable
+sudo ufw status verbose</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          <footer class="hssf-footer">
+            <span class="hssf-footer__copy">© 2026 By Rikkei Academy - Rikkei Education - All rights reserved.</span>
+            <span class="hssf-footer__page" data-hssf-page></span>
+          </footer>
+        </section>
+
+        <!-- 19. Section 4 Divider -->
+        <section class="hssf-slide hssf-slide--section" data-hssf-slide data-hssf-label="Section 4" aria-hidden="true">
+          <div class="hssf-slide__inner">
+            <div class="hssf-section-block">
+              <span class="hssf-section-block__num">04</span>
+              <h2 class="hssf-section-block__title">Cài đặt và cấu hình Web Server Nginx</h2>
+            </div>
+          </div>
+          <footer class="hssf-footer hssf-footer--light">
+            <span class="hssf-footer__copy">© 2026 By Rikkei Academy - Rikkei Education - All rights reserved.</span>
+            <span class="hssf-footer__page" data-hssf-page></span>
+          </footer>
+        </section>
+
+        <!-- 20. Web Server Problem -->
+        <section class="hssf-slide hssf-slide--content" data-hssf-slide data-hssf-label="Web Server Problem"
+          aria-hidden="true">
+          <div class="hssf-slide__inner">
+            <header class="hssf-header">
+              <div class="hssf-header__accent" aria-hidden="true"></div>
+              <h2 class="hssf-header__title">Đặt vấn đề: Phân phối dịch vụ Web</h2>
+              <p class="hssf-header__subtitle">Tại sao cần một Web Server trung gian?</p>
+            </header>
+            <ul class="hssf-list">
+              <li><strong>Hạn chế App Server thô:</strong> Các ứng dụng Node.js/Python không được tối ưu để phân phối
+                file tĩnh (HTML, CSS, Image) cho hàng nghìn request cùng lúc.</li>
+              <li data-hssf-fragment><strong>Bảo mật:</strong> Phơi bày trực tiếp cổng ứng dụng nội bộ (như 3000, 5000,
+                8080) ra ngoài Internet tăng nguy cơ bị tấn công dịch vụ.</li>
+              <li data-hssf-fragment><strong>Quản lý:</strong> Không thể chạy đồng thời nhiều trang web chung một cổng
+                HTTP (80) tiêu chuẩn.</li>
+            </ul>
+          </div>
+          <footer class="hssf-footer">
+            <span class="hssf-footer__copy">© 2026 By Rikkei Academy - Rikkei Education - All rights reserved.</span>
+            <span class="hssf-footer__page" data-hssf-page></span>
+          </footer>
+        </section>
+
+        <!-- 21. Nginx Intro -->
+        <section class="hssf-slide hssf-slide--content" data-hssf-slide data-hssf-label="Nginx Intro"
+          aria-hidden="true">
+          <div class="hssf-slide__inner">
+            <header class="hssf-header">
+              <div class="hssf-header__accent" aria-hidden="true"></div>
+              <h2 class="hssf-header__title">Nginx Web Server</h2>
+              <p class="hssf-header__subtitle">Kiến trúc hướng sự kiện (Event-driven) chịu tải cao</p>
+            </header>
+            <div class="hssf-columns">
+              <div class="hssf-columns__col">
+                <p>Nginx (Engine X) là phần mềm mã nguồn mở hoạt động hiệu quả như một Web Server phục vụ nội dung tĩnh,
+                  Reverse Proxy điều phối request và Load Balancer.</p>
+                <ul class="hssf-list">
+                  <li><strong>Port 80:</strong> HTTP (Không mã hóa thông tin).</li>
+                  <li><strong>Port 443:</strong> HTTPS (Mã hóa bảo mật TLS/SSL).</li>
+                </ul>
+              </div>
+              <div class="hssf-columns__col">
+                <aside class="hssf-callout hssf-callout--tip">
+                  <p class="hssf-callout__label">Ưu điểm</p>
+                  <p class="hssf-callout__body">
+                    Chiếm cực ít tài nguyên RAM/CPU so với Apache truyền thống khi chịu tải lượng truy cập đồng thời
+                    lớn.
+                  </p>
+                </aside>
+              </div>
+            </div>
+          </div>
+          <footer class="hssf-footer">
+            <span class="hssf-footer__copy">© 2026 By Rikkei Academy - Rikkei Education - All rights reserved.</span>
+            <span class="hssf-footer__page" data-hssf-page></span>
+          </footer>
+        </section>
+
+        <!-- 22. Nginx File Directory -->
+        <section class="hssf-slide hssf-slide--content" data-hssf-slide data-hssf-label="Nginx Structure"
+          aria-hidden="true">
+          <div class="hssf-slide__inner">
+            <header class="hssf-header">
+              <div class="hssf-header__accent" aria-hidden="true"></div>
+              <h2 class="hssf-header__title">Cấu trúc thư mục Nginx trên Ubuntu</h2>
+              <p class="hssf-header__subtitle">Các file và thư mục quản trị cần nhớ</p>
+            </header>
+            <ul class="hssf-list">
+              <li><code>/etc/nginx/nginx.conf</code>: File cấu hình tổng của dịch vụ Nginx.</li>
+              <li><code>/etc/nginx/sites-available/</code>: Nơi lưu các file cấu hình Server Block của từng website.
+              </li>
+              <li><code>/etc/nginx/sites-enabled/</code>: Chứa các liên kết tượng trưng (symlinks) trỏ sang
+                sites-available để Nginx biên dịch hoạt động.</li>
+              <li><code>/var/www/html/</code>: Thư mục gốc chứa source code tĩnh (HTML/CSS) mặc định.</li>
+            </ul>
+          </div>
+          <footer class="hssf-footer">
+            <span class="hssf-footer__copy">© 2026 By Rikkei Academy - Rikkei Education - All rights reserved.</span>
+            <span class="hssf-footer__page" data-hssf-page></span>
+          </footer>
+        </section>
+
+        <!-- 23. Server Block Config -->
+        <section class="hssf-slide hssf-slide--content" data-hssf-slide data-hssf-label="Server Block"
+          aria-hidden="true">
+          <div class="hssf-slide__inner">
+            <header class="hssf-header">
+              <div class="hssf-header__accent" aria-hidden="true"></div>
+              <h2 class="hssf-header__title">Cấu hình Server Block (Virtual Host)</h2>
+              <p class="hssf-header__subtitle">Chạy nhiều website khác nhau trên cùng một IP máy chủ</p>
+            </header>
+            <div class="hssf-columns">
+              <div class="hssf-columns__col" style="flex: 0.9;">
+                <p>Nginx phân biệt các request gửi đến dựa trên cấu hình tên miền `server_name` và điều hướng truy cập.
+                </p>
+                <ul class="hssf-list">
+                  <li>`listen 80`: Cổng HTTP.</li>
+                  <li>`root`: Thư mục chứa code.</li>
+                  <li>`index`: File ưu tiên thực thi.</li>
+                </ul>
+              </div>
+              <div class="hssf-columns__col" style="flex: 1.1;">
+                <div class="hssf-code">
+                  <div class="hssf-code__header">
+                    <span class="hssf-code__filename">/etc/nginx/sites-available/myweb</span>
+                    <span class="hssf-code__lang">nginx</span>
+                  </div>
+                  <pre class="hssf-code__pre"><code class="hssf-code__code language-nginx">server {
+    listen 80;
+    server_name myweb.com;
+    root /var/www/myweb;
+    index index.html;
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          <footer class="hssf-footer">
+            <span class="hssf-footer__copy">© 2026 By Rikkei Academy - Rikkei Education - All rights reserved.</span>
+            <span class="hssf-footer__page" data-hssf-page></span>
+          </footer>
+        </section>
+
+        <!-- 24. Basic Authentication -->
+        <section class="hssf-slide hssf-slide--content" data-hssf-slide data-hssf-label="HTTP Basic Auth"
+          aria-hidden="true">
+          <div class="hssf-slide__inner">
+            <header class="hssf-header">
+              <div class="hssf-header__accent" aria-hidden="true"></div>
+              <h2 class="hssf-header__title">Bảo mật HTTP Basic Authentication</h2>
+              <p class="hssf-header__subtitle">Yêu cầu đăng nhập trực tiếp trên trình duyệt</p>
+            </header>
+            <div class="hssf-columns">
+              <div class="hssf-columns__col" style="flex: 1;">
+                <p>Bảo vệ tài nguyên nội bộ bằng cách cấu hình Nginx yêu cầu tài khoản/mật khẩu được băm trước đó.</p>
+                <ul class="hssf-list" style="font-size: 0.9rem;">
+                  <li>Sử dụng lệnh `htpasswd` của gói `apache2-utils` để băm và tạo file mật khẩu.</li>
+                  <li>Chỉ thị `auth_basic` hiển thị thông báo.</li>
+                  <li>Chỉ thị `auth_basic_user_file` trỏ đến file tài khoản.</li>
+                </ul>
+              </div>
+              <div class="hssf-columns__col" style="flex: 1;">
+                <div class="hssf-code">
+                  <div class="hssf-code__header">
+                    <span class="hssf-code__filename">nginx_auth.conf</span>
+                    <span class="hssf-code__lang">nginx</span>
+                  </div>
+                  <pre class="hssf-code__pre"><code class="hssf-code__code language-nginx">location /secure/ {
+    auth_basic "Restricted Area";
+    auth_basic_user_file /etc/nginx/.htpasswd;
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          <footer class="hssf-footer">
+            <span class="hssf-footer__copy">© 2026 By Rikkei Academy - Rikkei Education - All rights reserved.</span>
+            <span class="hssf-footer__page" data-hssf-page></span>
+          </footer>
+        </section>
+
+        <!-- 25. Redundancy Rules Warning -->
+        <section class="hssf-slide hssf-slide--content" data-hssf-slide data-hssf-label="Rules Warning"
+          aria-hidden="true">
+          <div class="hssf-slide__inner">
+            <header class="hssf-header">
+              <div class="hssf-header__accent" aria-hidden="true"></div>
+              <h2 class="hssf-header__title">Nguyên tắc giới hạn phạm vi bài học</h2>
+              <p class="hssf-header__subtitle">Tránh chồng chéo kiến thức giữa các Session</p>
+            </header>
+            <aside class="hssf-callout hssf-callout--danger" style="margin-top: 2rem;">
+              <p class="hssf-callout__label">Quy tắc quan trọng (Redundancy Rules)</p>
+              <p class="hssf-callout__body">
+                Trong Session 02 này, chúng ta <strong>chỉ</strong> thực hành cấu hình Nginx cơ bản để phục vụ trang web
+                tĩnh. <strong>Tuyệt đối không</strong> cấu hình deploy source code tự động hoặc thủ công của ứng dụng
+                Java/Node.js để đảm bảo tính cô lập và đúng tiến trình của bài học.
+              </p>
+            </aside>
+          </div>
+          <footer class="hssf-footer">
+            <span class="hssf-footer__copy">© 2026 By Rikkei Academy - Rikkei Education - All rights reserved.</span>
+            <span class="hssf-footer__page" data-hssf-page></span>
+          </footer>
+        </section>
+
+        <!-- 26. End -->
+        <section class="hssf-slide hssf-slide--section" data-hssf-slide data-hssf-label="End" aria-hidden="true">
+          <div class="hssf-slide__inner">
+            <div class="hssf-brand-end">
+              <p class="hssf-brand-end__kicker">KẾT THÚC SESSION 02</p>
+              <h2 class="hssf-brand-end__title">
+                HỌC VIỆN ĐÀO TẠO LẬP TRÌNH CHẤT LƯỢNG NHẬT BẢN
+              </h2>
+              <p class="hssf-brand-end__org">Rikkei Education</p>
+            </div>
+          </div>
+          <footer class="hssf-footer hssf-footer--light hssf-footer--nopage">
+            <span class="hssf-footer__copy">© 2026 By Rikkei Academy - Rikkei Education - All rights reserved.</span>
+            <span class="hssf-footer__page" data-hssf-page></span>
+          </footer>
+        </section>
+
+      </div>
+    </div>
+
+    <nav class="hssf-nav" data-hssf-nav aria-label="Slide navigation">
+      <button type="button" class="hssf-nav__btn" data-hssf-prev aria-label="Previous">
+        ‹
+      </button>
+      <span class="hssf-nav__counter" data-hssf-counter>1 / 26</span>
+      <button type="button" class="hssf-nav__btn" data-hssf-next aria-label="Next">
+        ›
+      </button>
+      <button type="button" class="hssf-nav__btn" data-hssf-fullscreen aria-label="Fullscreen">
+        ⛶
+      </button>
+    </nav>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/hssf-slides@0.2.1/dist/hssf.min.js" defer></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      window.HSSF.init(document.querySelector("[data-hssf-canvas]"));
+    });
+  </script>
+</body>
+
+</html>
