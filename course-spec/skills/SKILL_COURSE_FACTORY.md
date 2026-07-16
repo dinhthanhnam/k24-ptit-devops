@@ -76,7 +76,7 @@ Tên có thể alias; **ý nghĩa** giữ nguyên:
 | `get_review_packet` | Cho human |
 | `set_review_status` | draft→…→approved |
 
-**Unit `tutorial` (step-by-step):** 1 lab / **theory session only** — `unit_type=tutorial` (alias `step_by_step`).  
+**Unit `tutorial` (step-by-step):** 1 lab / **theory session only** — `unit_type=tutorial` (alias `step_by_step`). Lab này chỉ tập trung vào happy-path cực đơn giản, trực quan, giúp học viên nhìn thấy kết quả nhanh để tạo hứng thú, **không cần bao hàm tất cả nội dung của session**.  
 **Cấm** tutorial trên `session_kind: practice` (practice = homework only).  
 Guideline: `TUTORIAL_DESIGN.md`. DevOps: `> **[IMAGE NEEDED]** ...` khi cần screenshot.
 
@@ -104,7 +104,7 @@ start_unit(homework) → … → approved
 # quiz warm_up / exit nếu plan
 ```
 
-**Tutorial ≠ homework:** tutorial = happy-path lab (theory only); homework = 6 EX.  
+**Tutorial ≠ homework:** tutorial = happy-path lab cực đơn giản, trực quan (không cần bao phủ hết bài học, chỉ tập trung hiển thị kết quả trực quan nhanh nhất); homework = 6 EX bao quát toàn bộ nội dung chính của session.  
 **Practice:** không gen tutorial.
 
 ### 2.2 Session N (N ≥ 2) — inherit approved

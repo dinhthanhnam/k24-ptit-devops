@@ -13,9 +13,16 @@ course_note: "DevOps Basics (k24-ptit-devops) — tutorial CHỈ session theory;
 
 Mỗi session **`session_kind: theory`** có **đúng 1** unit `type: tutorial` (lab cầm tay chỉ việc), **ngoài** homework 6 EX.
 
+### Nguyên tắc cốt lõi (Core Principles)
+1. **Happy-path cực đơn giản:** Lab tutorial chỉ đi theo một con đường duy nhất thành công (happy path) với các bước cơ bản nhất. **Không cần bao quát toàn bộ nội dung lý thuyết hay tất cả các khía cạnh bảo mật/nâng cao của session**.
+2. **Trực quan & thú vị:** Tập trung vào kết quả hiển thị trực quan nhanh nhất (ví dụ: nhìn thấy trang web hoạt động ngay) để tạo cảm hứng và động lực học tập cho học viên.
+3. **Phân chia vai trò rõ ràng:** 
+   * **Tutorial:** Trải nghiệm cơ bản, nhanh chóng, ít rào cản.
+   * **Homework:** Nơi thực hành chuyên sâu, bao hàm tất cả các ràng buộc bảo mật, các góc khuất kỹ thuật và các lỗi thực tế.
+
 | | **Tutorial** | **Homework** |
 |--|--------------|--------------|
-| Scope | **Theory session only** | Theory + practice |
+| Scope | **Theory session only** (Happy-path cơ bản, trực quan) | Theory + practice (Bao phủ đầy đủ nội dung & nâng cao) |
 | / session theory | **1 file** `session_NN_tutorial.md` | 1 file, **6 EX** |
 | Practice session | **Không có** | **6 EX** (only artifact) |
 | MCP | `unit_type: tutorial` (alias `step_by_step`) | `homework` |
