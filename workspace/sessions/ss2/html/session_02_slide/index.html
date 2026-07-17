@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
     rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hssf-slides@0.2.1/dist/hssf.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hssf-slides@0.3.0/dist/hssf.min.css" />
   <link rel="stylesheet" href="./styles/deck.css" />
 </head>
 
@@ -181,14 +181,17 @@
                   Ảo hóa (Virtualization) là việc chèn một lớp phần mềm trung gian lên trên phần cứng vật lý để phân
                   tách nó thành các máy ảo (Virtual Machine - VM) hoàn chỉnh chạy độc lập.
                 </p>
-                <div class="deck-spacer"></div>
+                <div class="hssf-columns__col"
+                  style="flex: 1; display: flex; flex-direction: row; justify-content: center;">
+                  <img src="./assets/images/virtualization-architecture-3D.png">
+                </div>
                 <aside class="hssf-callout hssf-callout--info">
                   <p class="hssf-callout__label">Lịch sử</p>
                   <p class="hssf-callout__body">Khởi nguồn từ 1967 (CP-40 trên Mainframe IBM) và phát triển bùng nổ bởi
                     VMware từ năm 1998.</p>
                 </aside>
               </div>
-              <div class="hssf-columns__col"
+              <!-- <div class="hssf-columns__col"
                 style="flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 1.5rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15);">
                 <div
                   style="text-align: center; font-weight: bold; border: 1px dashed rgba(255,255,255,0.3); padding: 0.5rem; margin-bottom: 0.5rem; border-radius: 4px;">
@@ -199,7 +202,7 @@
                 <div
                   style="text-align: center; font-weight: bold; border: 1px dashed rgba(255,255,255,0.3); padding: 0.5rem; border-radius: 4px;">
                   Phần cứng vật lý (Host)</div>
-              </div>
+              </div> -->
             </div>
           </div>
           <footer class="hssf-footer">
@@ -518,13 +521,15 @@ PasswordAuthentication no</code></pre>
             <div class="hssf-columns">
               <div class="hssf-columns__col">
                 <h3 style="margin-bottom: 1rem;">Default Deny Incoming</h3>
-                <p>Mặc định chặn toàn bộ các gói tin đi vào. Chỉ cho phép các cổng dịch vụ được khai báo tường minh hoạt động.</p>
+                <p>Mặc định chặn toàn bộ các gói tin đi vào. Chỉ cho phép các cổng dịch vụ được khai báo tường minh hoạt
+                  động.</p>
               </div>
               <div class="hssf-columns__col">
                 <ul class="hssf-list">
                   <li><strong>Cổng 22 (SSH):</strong> Chỉ mở cho IP của quản trị viên (hoặc mở rộng có kiểm soát).</li>
                   <li><strong>Cổng 80 (HTTP) & 443 (HTTPS):</strong> Mở rộng rãi cho người dùng truy cập web.</li>
-                  <li><strong>Default Allow Outgoing:</strong> Cho phép máy chủ tự do kết nối ra ngoài để cập nhật hệ thống.</li>
+                  <li><strong>Default Allow Outgoing:</strong> Cho phép máy chủ tự do kết nối ra ngoài để cập nhật hệ
+                    thống.</li>
                 </ul>
               </div>
             </div>
@@ -695,12 +700,16 @@ sudo ufw status verbose</code></pre>
                     <span class="hssf-code__filename">/etc/nginx/sites-available/myweb</span>
                     <span class="hssf-code__lang">nginx</span>
                   </div>
-                  <pre class="hssf-code__pre"><code class="hssf-code__code language-nginx">server {
-    listen 80;
-    server_name myweb.com;
-    root /var/www/myweb;
-    index index.html;
-}</code></pre>
+                  <pre class="hssf-code__pre">
+                    <code class="hssf-code__code language-nginx">
+                      server {
+                        listen 80;
+                        server_name myweb.com;
+                        root /var/www/myweb;
+                        index index.html;
+                      }
+                    </code>
+                  </pre>
                 </div>
               </div>
             </div>
@@ -807,7 +816,7 @@ sudo ufw status verbose</code></pre>
     </nav>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/hssf-slides@0.2.1/dist/hssf.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/hssf-slides@0.3.0/dist/hssf.min.js" defer></script>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       window.HSSF.init(document.querySelector("[data-hssf-canvas]"));

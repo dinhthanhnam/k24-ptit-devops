@@ -11,6 +11,11 @@
   /* default 16px ≈ +25% type */
 }
 
+.hssf-code__code,
+.hssf-code pre code {
+  color: var(--hssf-code-fg, #abb2bf);
+}
+
 .hssf-steps__num {
   width: 3rem;
   height: 3rem;
