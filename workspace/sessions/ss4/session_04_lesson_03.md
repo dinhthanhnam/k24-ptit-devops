@@ -59,9 +59,9 @@ Khi bạn thực hiện thao tác Git kết nối đến GitHub, máy tính sẽ
 * `git clone <url>`: Sao chép toàn bộ mã nguồn và lịch sử commit của một remote repository về máy local lần đầu tiên.
 
 <!-- section: steps -->
-## 3. Các step thực hành
+## 3. Các bước thực hành
 
-### Step 1 — Kiểm tra và tạo mới cặp khóa SSH (SSH Keypair)
+### Bước 1 — Kiểm tra và tạo mới cặp khóa SSH (SSH Keypair)
 Kiểm tra xem máy tính cá nhân đã có sẵn khóa SSH chưa, nếu chưa tiến hành sinh khóa mới.
 
 1. Kiểm tra các khóa hiện có:
@@ -75,7 +75,7 @@ Kiểm tra xem máy tính cá nhân đã có sẵn khóa SSH chưa, nếu chưa 
    ```
    *Khi hệ thống hỏi nơi lưu và mật khẩu (passphrase), hãy nhấn **Enter** liên tiếp 3 lần để chọn mặc định và không cài mật khẩu.*
 
-### Step 2 — Sao chép Public Key và cấu hình lên GitHub
+### Bước 2 — Sao chép Public Key và cấu hình lên GitHub
 Đưa khóa công khai lên tài khoản GitHub để máy chủ nhận diện máy local của bạn.
 
 1. Hiển thị nội dung của khóa công khai (Public Key):
@@ -86,7 +86,7 @@ Kiểm tra xem máy tính cá nhân đã có sẵn khóa SSH chưa, nếu chưa 
 3. Đăng nhập vào [GitHub](https://github.com), truy cập vào **Settings** (ở góc phải trên cùng) -> **SSH and GPG keys** -> chọn **New SSH Key**.
 4. Nhập tiêu đề tùy chọn (ví dụ: `My Laptop`) và dán toàn bộ nội dung khóa công khai đã copy vào ô **Key**, sau đó nhấn **Add SSH Key**.
 
-### Step 3 — Kiểm tra kết nối SSH tới GitHub
+### Bước 3 — Kiểm tra kết nối SSH tới GitHub
 Xác nhận rằng máy tính local của bạn đã có thể nói chuyện và xác thực thành công với GitHub.
 
 Chạy lệnh kiểm tra kết nối từ Terminal:
@@ -98,7 +98,7 @@ ssh -T git@github.com
 `Hi username! You've successfully authenticated, but GitHub does not provide shell access.`
 Có nghĩa là bạn đã cấu hình SSH thành công!
 
-### Step 4 — Tạo Repository trống trên GitHub
+### Bước 4 — Tạo Repository trống trên GitHub
 Tạo nơi chứa dự án trên đám mây để chuẩn bị liên kết.
 
 1. Truy cập trang chủ GitHub, nhấn nút **New** (hoặc nút **Create repository**).
@@ -108,21 +108,21 @@ Tạo nơi chứa dự án trên đám mây để chuẩn bị liên kết.
 5. Nhấn **Create repository**.
 6. Tại giao diện hiển thị, chọn tab **SSH** (không chọn HTTPS) và sao chép đường dẫn repository có dạng: `git@github.com:username/git-practice-remote.git`.
 
-### Step 5 — Liên kết Local Repository với GitHub
+### Bước 5 — Liên kết Local Repository với GitHub
 Khai báo đường dẫn remote cho dự án local mà chúng ta đã làm việc ở bài trước.
 
 Mở thư mục dự án `git-practice` ở local trên Terminal và chạy lệnh:
 ```bash
 git remote add origin git@github.com:username/git-practice-remote.git
 ```
-*(Thay thế `git@github.com:username/git-practice-remote.git` bằng đường dẫn SSH repository bạn vừa copy ở Step 4).*
+*(Thay thế `git@github.com:username/git-practice-remote.git` bằng đường dẫn SSH repository bạn vừa copy ở Bước 4).*
 
 Để kiểm tra xem liên kết đã được thiết lập chính xác hay chưa:
 ```bash
 git remote -v
 ```
 
-### Step 6 — Đẩy mã nguồn lên GitHub (Git Push)
+### Bước 6 — Đẩy mã nguồn lên GitHub (Git Push)
 Thực hiện đẩy toàn bộ lịch sử commit local lên repository remote.
 
 Chạy lệnh đẩy nhánh `main` lên remote:
@@ -133,7 +133,7 @@ git push -u origin main
 
 F5 lại trang GitHub của bạn, bạn sẽ thấy toàn bộ các tệp tin và lịch sử commit ở local đã được đồng bộ lên giao diện web của GitHub.
 
-### Step 7 — Giả lập Clone và đồng bộ hóa (Git Pull)
+### Bước 7 — Giả lập Clone và đồng bộ hóa (Git Pull)
 Giả lập việc một thành viên khác tải code về máy và cập nhật dữ liệu.
 
 1. Di chuyển ra khỏi thư mục dự án hiện tại và thực hiện clone dự án về một thư mục mới có tên là `git-practice-member`:

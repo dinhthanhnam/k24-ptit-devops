@@ -82,9 +82,9 @@ Mã nguồn từ nhánh bạn đang gộp vào
 Lập trình viên bắt buộc phải mở file, thảo luận với đồng nghiệp (nếu làm nhóm), lựa chọn đoạn code chính xác cần giữ lại, xóa các ký tự đánh dấu của Git, sau đó add và commit để hoàn tất quá trình gộp.
 
 <!-- section: steps -->
-## 3. Các step thực hành
+## 3. Các bước thực hành
 
-### Step 1 — Kiểm tra và Tạo nhánh mới
+### Bước 1 — Kiểm tra và Tạo nhánh mới
 Kiểm tra danh sách nhánh hiện có và tạo một nhánh tính năng mới tên là `feature-login`.
 
 1. Kiểm tra danh sách các nhánh local:
@@ -102,7 +102,7 @@ Kiểm tra danh sách nhánh hiện có và tạo một nhánh tính năng mới
    ```
    *(Mẹo nhanh: Bạn có thể gộp hai lệnh tạo và chuyển nhánh bằng một lệnh duy nhất: `git checkout -b feature-login` hoặc `git switch -c feature-login`).*
 
-### Step 2 — Thực hiện Commit trên nhánh mới
+### Bước 2 — Thực hiện Commit trên nhánh mới
 Tạo sự thay đổi mã nguồn trên nhánh `feature-login` để kiểm tra tính cô lập.
 
 1. Tạo file `login.html`:
@@ -120,7 +120,7 @@ Tạo sự thay đổi mã nguồn trên nhánh `feature-login` để kiểm tra
    ```
 4. Kiểm tra thư mục dự án: File `login.html` hoàn toàn biến mất ở nhánh `main` vì các thay đổi trên nhánh `feature-login` được cô lập hoàn toàn.
 
-### Step 3 — Thực hiện Fast-forward Merge
+### Bước 3 — Thực hiện Fast-forward Merge
 Tiến hành gộp nhánh `feature-login` vào nhánh `main` khi nhánh `main` chưa có thay đổi nào mới.
 
 Đang đứng ở nhánh `main`, chạy lệnh gộp nhánh:
@@ -130,7 +130,7 @@ git merge feature-login
 
 *Kết quả:* Terminal hiển thị dòng chữ `Updating ... Fast-forward`. Con trỏ nhánh `main` đã được dời tiến thẳng lên bằng con trỏ nhánh `feature-login`. File `login.html` xuất hiện an toàn trong thư mục của nhánh `main`.
 
-### Step 4 — Tạo kịch bản xung đột (Merge Conflict Setup)
+### Bước 4 — Tạo kịch bản xung đột (Merge Conflict Setup)
 Tạo hai nhánh cùng chỉnh sửa một dòng trong file `login.html` để kích hoạt xung đột.
 
 1. Tạo một nhánh mới tên là `feature-facebook`:
@@ -162,7 +162,7 @@ Tạo hai nhánh cùng chỉnh sửa một dòng trong file `login.html` để k
 
 Lúc này, cả hai nhánh `main` và `feature-facebook` đều có commit mới kể từ điểm tách nhánh, và cả hai đều sửa đổi dòng số 1 trong file `login.html`.
 
-### Step 5 — Tiến hành Merge và Nhận diện Conflict
+### Bước 5 — Tiến hành Merge và Nhận diện Conflict
 Gộp nhánh phụ vào nhánh chính và quan sát thông báo lỗi xung đột của Git.
 
 Đang đứng ở nhánh `main`, chạy lệnh gộp nhánh `feature-facebook` vào:
@@ -177,7 +177,7 @@ Automatic merge failed; fix conflicts and then commit the result.
 ```
 Nếu chạy lệnh `git status`, bạn sẽ thấy file `login.html` nằm dưới mục **Both modified**.
 
-### Step 6 — Giải quyết xung đột thủ công (Conflict Resolution)
+### Bước 6 — Giải quyết xung đột thủ công (Conflict Resolution)
 Mở tệp tin bị xung đột, chỉnh sửa nội dung và kết thúc quá trình gộp.
 
 1. Mở file `login.html` bằng trình soạn thảo (ví dụ: VS Code hoặc Nano). Nội dung file hiển thị dạng:
