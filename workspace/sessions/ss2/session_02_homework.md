@@ -129,11 +129,11 @@ difficulty_mix:
 *   Thiết lập một Server Block tùy chỉnh lắng nghe trên cổng mặc định HTTP (`80`) để phục vụ một trang HTML tĩnh của dự án.
 
 #### Yêu cầu
-*   **Bối cảnh:** Bạn cần dựng một website giới thiệu đơn giản cho PTIT chạy trên máy chủ Droplet vừa tạo để người dùng ngoài internet truy cập qua IP của máy chủ.
+*   **Bối cảnh:** Bạn cần dựng một website giới thiệu đơn giản chạy trên máy chủ Droplet vừa tạo để người dùng ngoài internet truy cập qua IP của máy chủ.
 *   **Ràng buộc:**
     *   Cài đặt phiên bản Nginx mới nhất từ repository mặc định của Ubuntu.
-    *   Tạo thư mục chứa mã nguồn tĩnh tại đường dẫn `/var/www/ptit-web/html/` và tạo một file `index.html` đơn giản hiển thị dòng chữ: "Welcome to PTIT DevOps Course - Session 02".
-    *   Tạo file cấu hình Server Block riêng biệt cho trang web tại `/etc/nginx/sites-available/ptit-web.conf` cấu hình lắng nghe cổng `80`, trỏ root về thư mục mã nguồn vừa tạo.
+    *   Tạo thư mục chứa mã nguồn tĩnh tại đường dẫn `/var/www/web-app/html/` và tạo một file `index.html` đơn giản hiển thị dòng chữ: "Welcome to DevOps Course - Session 02".
+    *   Tạo file cấu hình Server Block riêng biệt cho trang web tại `/etc/nginx/sites-available/web-app.conf` cấu hình lắng nghe cổng `80`, trỏ root về thư mục mã nguồn vừa tạo.
     *   Kích hoạt Server Block bằng cách tạo liên kết tượng trưng (symlink) sang thư mục `/etc/nginx/sites-enabled/`.
     *   Xóa hoặc hủy kích hoạt cấu hình trang mặc định `default` của Nginx để tránh xung đột cổng 80.
 
@@ -142,11 +142,11 @@ difficulty_mix:
     *   Chạy kiểm tra cú pháp cấu hình Nginx: `sudo nginx -t` (phải hiển thị `syntax is ok`).
     *   Reload lại Nginx: `sudo systemctl reload nginx`.
     *   Từ máy cá nhân, truy cập trình duyệt bằng địa chỉ IP: `http://<IP_ADDRESS_DROPLET>`.
-*   **Kết quả mong đợi:** Trình duyệt hiển thị đúng trang HTML tùy biến đã viết với dòng chữ của PTIT.
+*   **Kết quả mong đợi:** Trình duyệt hiển thị đúng trang HTML tùy biến đã viết với dòng chữ chào mừng.
 
 #### Tiêu chí chấm
 *   **Yêu cầu phải có:**
-    *   File cấu hình `ptit-web.conf` chứa đúng chỉ thị `listen 80;` and `root /var/www/ptit-web/html;`.
+    *   File cấu hình `web-app.conf` chứa đúng chỉ thị `listen 80;` and `root /var/www/web-app/html;`.
     *   Symlink tồn tại chính xác trong thư mục `sites-enabled`.
 *   **Yêu cầu không được có:**
     *   Cấm sửa trực tiếp cấu hình trong file `/etc/nginx/nginx.conf`.
@@ -154,7 +154,7 @@ difficulty_mix:
 
 #### Hướng dẫn nộp bài
 *   **Đường dẫn trên GitHub:** `homework/session_02/ex3/`
-*   **Cơ chế nộp:** Học viên nộp tệp tin cấu hình Nginx `ptit-web.conf` và file `index.html` lên thư mục bài tập của mình trên GitHub.
+*   **Cơ chế nộp:** Học viên nộp tệp tin cấu hình Nginx `web-app.conf` và file `index.html` lên thư mục bài tập của mình trên GitHub.
 
 #### Gợi ý/Bệ đỡ
 *   Sau khi tạo cấu hình, luôn chạy `sudo nginx -t` để kiểm tra lỗi cú pháp trước khi nạp lại cấu hình dịch vụ.
@@ -219,17 +219,17 @@ difficulty_mix:
 *   Thiết lập phân quyền tối ưu cho thư mục web tĩnh để user `devops` có thể chỉnh sửa mã nguồn mà không cần dùng quyền `root`/`sudo`, đồng thời dịch vụ Nginx (chạy dưới user `www-data`) vẫn có quyền đọc và hiển thị website.
 
 #### Yêu cầu
-*   **Bối cảnh:** Bạn muốn deploy phiên bản mới của website tĩnh, nhưng hiện tại thư mục `/var/www/ptit-web/` đang thuộc sở hữu của `root`, khiến tài khoản `devops` không thể sửa đổi file trực tiếp.
+*   **Bối cảnh:** Bạn muốn deploy phiên bản mới của website tĩnh, nhưng hiện tại thư mục `/var/www/web-app/` đang thuộc sở hữu của `root`, khiến tài khoản `devops` không thể sửa đổi file trực tiếp.
 *   **Ràng buộc:**
-    *   Thay đổi chủ sở hữu (owner) của thư mục `/var/www/ptit-web/` và toàn bộ nội dung bên trong sang user `devops`.
+    *   Thay đổi chủ sở hữu (owner) của thư mục `/var/www/web-app/` và toàn bộ nội dung bên trong sang user `devops`.
     *   Thay đổi nhóm sở hữu (group) sang nhóm `www-data` (nhóm chạy của Nginx).
     *   Thiết lập quyền truy cập (chmod) sao cho: Chủ sở hữu (`devops`) có quyền đọc và ghi (Read/Write), Nhóm sở hữu (`www-data`) có quyền đọc (Read) để phục vụ web tĩnh, người dùng khác không có quyền truy cập hoặc chỉ được đọc.
     *   Đảm bảo sau khi phân quyền, Nginx không bị lỗi `403 Forbidden` khi truy cập trang web.
 
 #### Kiểm tra
 *   **Lệnh kiểm tra:**
-    *   Chạy lệnh: `ls -la /var/www/ptit-web/` để kiểm tra phân quyền.
-    *   Đăng nhập bằng user `devops` và thử chạy lệnh chỉnh sửa file: `echo "Update" >> /var/www/ptit-web/html/index.html` mà không dùng `sudo` (phải ghi thành công).
+    *   Chạy lệnh: `ls -la /var/www/web-app/` để kiểm tra phân quyền.
+    *   Đăng nhập bằng user `devops` và thử chạy lệnh chỉnh sửa file: `echo "Update" >> /var/www/web-app/html/index.html` mà không dùng `sudo` (phải ghi thành công).
 *   **Kết quả mong đợi:** Ghi file thành công bằng user thường, web hiển thị nội dung mới bình thường mà không bị lỗi Nginx.
 
 #### Tiêu chí chấm
@@ -241,7 +241,7 @@ difficulty_mix:
 
 #### Hướng dẫn nộp bài
 *   **Đường dẫn trên GitHub:** `homework/session_02/ex5/`
-*   **Cơ chế nộp:** Nộp báo cáo `README.md` hiển thị kết quả đầu ra của lệnh `ls -la /var/www/ptit-web/` và các bước kiểm tra ghi file từ user `devops`.
+*   **Cơ chế nộp:** Nộp báo cáo `README.md` hiển thị kết quả đầu ra của lệnh `ls -la /var/www/web-app/` và các bước kiểm tra ghi file từ user `devops`.
 
 #### Gợi ý/Bệ đỡ
 *   *Gợi ý:* Sử dụng các lệnh `chown -R` và `chmod -R` kết hợp để phân quyền đệ quy cho toàn bộ thư mục web.
@@ -259,12 +259,12 @@ difficulty_mix:
 *   Tích hợp toàn bộ kiến thức và kỹ năng đã học trong Session 2 để dựng một máy chủ ảo, phân quyền bảo mật, cài đặt Nginx và thiết lập các lớp tường lửa hoàn chỉnh theo chuẩn thực tế.
 
 #### Yêu cầu
-*   **Bối cảnh:** Bạn được giao nhiệm vụ thiết lập một máy chủ Droplet mới trên DigitalOcean để vận hành trang Landing Page chính thức của một dự án PTIT. Hãy tự thực hiện từ đầu đến cuối các thiết lập hạ tầng.
+*   **Bối cảnh:** Bạn được giao nhiệm vụ thiết lập một máy chủ Droplet mới trên DigitalOcean để vận hành trang Landing Page chính thức của một dự án cá nhân. Hãy tự thực hiện từ đầu đến cuối các thiết lập hạ tầng.
 *   **Ràng buộc:**
     1.  Tạo Droplet mới trên DigitalOcean bằng SSH Key.
-    2.  Tạo user quản trị thường tên là `ptit-admin` thuộc nhóm `sudo`, copy SSH Key để tài khoản này kết nối được.
+    2.  Tạo user quản trị thường tên là `admin-user` thuộc nhóm `sudo`, copy SSH Key để tài khoản này kết nối được.
     3.  Cài đặt Web Server Nginx.
-    4.  Tạo thư mục ứng dụng tại `/var/www/landing-page/html/`. Gán sở hữu cho `ptit-admin:www-data`.
+    4.  Tạo thư mục ứng dụng tại `/var/www/landing-page/html/`. Gán sở hữu cho `admin-user:www-data`.
     5.  Tạo file cấu hình Server Block riêng chạy ở cổng `80` mặc định, trỏ root về thư mục trên.
     6.  Kích hoạt Server Block và tắt trang mặc định của Nginx.
     7.  Cấu hình tường lửa UFW và DigitalOcean Cloud Firewall chỉ cho phép kết nối cổng `22` và `80`.
@@ -279,6 +279,7 @@ difficulty_mix:
     *   Tài liệu hướng dẫn (README.md) mô tả toàn bộ vòng đời thiết lập từ Droplet ban đầu cho tới website hoạt động trực tuyến.
 *   **Yêu cầu không được có:**
     *   Không để lại các lỗ hổng như cổng SSH mặc định mở kèm Password Authentication, hay thư mục web bị phân quyền `777`.
+    *   Không thực hiện các thao tác quản trị trực tiếp từ root sau khi đã tạo `admin-user`.
 
 #### Hướng dẫn nộp bài
 *   **Đường dẫn trên GitHub:** `homework/session_02/ex6/`
