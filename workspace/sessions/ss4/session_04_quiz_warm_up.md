@@ -2,7 +2,7 @@
 schema_version: 1
 id: ss04_quiz_warm_up
 type: quiz
-status: draft
+status: approved
 course_id: devops-basic
 session: 4
 unit: 0
