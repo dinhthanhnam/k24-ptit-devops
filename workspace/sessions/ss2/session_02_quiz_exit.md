@@ -38,7 +38,7 @@ maps_to:
 # Quiz cuối giờ Session 02
 
 ## Q1
-Trong các cấu hình dưới đây của Nginx Server Block, cấu hình nào khai báo chính xác thư mục chứa mã nguồn tĩnh cho một website chạy ở cổng 8080?
+Để cấu hình một Nginx Server Block hoạt động trên cổng 8080 (thay vì cổng mặc định 80) và chỉ định đúng thư mục gốc chứa mã nguồn tĩnh, cấu hình nào sau đây là chính xác về mặt cú pháp?
 
 [A]
 ```nginx
