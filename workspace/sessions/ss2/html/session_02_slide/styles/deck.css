@@ -1,14 +1,11 @@
 /**
- * Deck-local styles only.
- * Use .deck-* classes — do not invent public hssf-* names.
- *
- * hssf-slides@0.2.1+: --hssf-fs-* follow --hssf-stage-font-size.
- * One knob scales titles, lists, cards, etc.
+ * Session 02 — deck-local only.
+ * Charter: tokens / tiny tweaks. Layout = Tailwind (see index.html).
+ * Brand blocks = hssf-* only. No parallel widget kits.
  */
 
-:root {
-  --hssf-stage-font-size: 20px;
-  /* default 16px ≈ +25% type */
+.hssf-stage {
+  --hssf-stage-font-size: 18px;
 }
 
 .hssf-code__code,
@@ -16,12 +13,6 @@
   color: var(--hssf-code-fg, #abb2bf);
 }
 
-.hssf-steps__num {
-  width: 3rem;
-  height: 3rem;
-}
-
-.deck-spacer {
-  flex: 1 1 auto;
-  min-height: 0;
+.hssf-advance-hint {
+  margin-right: 4rem;
 }
